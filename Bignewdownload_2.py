@@ -18,7 +18,7 @@ def Bignewdoanload(output_dir):
     # Load the .env file
     load_dotenv()
     #TODO add the API key to the .env file
-    apiKey= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczODc3NjE4OSwianRpIjoiNzk4YzUwMzMtNjZmZS00NTUzLThhZjktNjQ3ZTUwOWYyMDBhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjgzYzExNWYzLWQ5ZTMtNDAyMy1hYzYyLTMyNzllNzljOGJiNCIsIm5iZiI6MTczODc3NjE4OX0.d_JOc5ATxy0HSSP0Xkf8l6PdJDHwYWca8YCfRhLeodU'
+    apiKey= os.getenv()
     client = Client(apiKey) #loads the client with the API key
     project_name='California campaign finance data'
     project_id ='UHJvamVjdDo2MDVjNzdiYS0wODI4LTRlOTEtOGM3OC03ZjA4NGI2ZDEwZWE='
