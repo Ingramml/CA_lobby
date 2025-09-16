@@ -1,5 +1,5 @@
 from google.cloud import bigquery
-from Bigquery_connection import bigquery_connect
+from .Bigquery_connection import bigquery_connect
 from dotenv import load_dotenv
 import os
 load_dotenv()

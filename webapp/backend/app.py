@@ -16,8 +16,8 @@ from dotenv import load_dotenv
 # Add the parent directory to path to import existing modules
 sys.path.append('/Users/michaelingram/Documents/GitHub/CA_lobby')
 try:
-    from Bigquery_connection import bigquery_connect, get_project_id_from_credentials
-    from rowtypeforce import row_type_force
+    from data_processing.Bigquery_connection import bigquery_connect, get_project_id_from_credentials
+    from data_processing.rowtypeforce import row_type_force
     BIGQUERY_AVAILABLE = True
 except ImportError as e:
     print(f"Warning: Could not import BigQuery modules: {e}")

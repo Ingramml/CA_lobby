@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 import datetime
-from determine_df import ensure_dataframe
+from .determine_df import ensure_dataframe
 
 load_dotenv()
 

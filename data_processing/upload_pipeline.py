@@ -1,16 +1,16 @@
-from upload import upload_to_bigquery
-from rowtypeforce import row_type_force
-from Bigquery_connection import bigquery_connect
-from load_dotenv import load_dotenv
+from .upload import upload_to_bigquery
+from .rowtypeforce import row_type_force
+from .Bigquery_connection import bigquery_connect
+from dotenv import load_dotenv
 import os
 import pandas as pd
 from datetime import datetime
 import glob
-from Bignewdownload_2 import Bignewdoanload
+from .Bignewdownload_2 import Bignewdoanload
 
 
 today= datetime.today().strftime('%Y-%m-%d')
-download_dir = f"/Users/michaelingram/Documents/GitHub/CA_lobby/Downloaded_files/"
+download_dir = f"{os.getcwd()}/Downloaded_files/"
 downloaded_files = Bignewdoanload(download_dir)
 if downloaded_files:
     all_files = downloaded_files
@@ -41,3 +41,4 @@ for filename in files_to_process:
     project_id = "ca-lobby"  # Replace with your Google Cloud project ID
     upload_to_bigquery(cleanedframe,tablename, os.getenv('CREDENTIALS_LOCATION'),project_id)
 client.close()
+print("All files processed successfully.")

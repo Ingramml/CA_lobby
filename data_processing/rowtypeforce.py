@@ -1,9 +1,9 @@
 import pandas as pd
 import os
 import datetime
-from Bigquery_connection import bigquery_connect
+from .Bigquery_connection import bigquery_connect
 from dotenv import load_dotenv
-from determine_df import ensure_dataframe
+from .determine_df import ensure_dataframe
 
 
 
