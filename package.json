@@ -1,0 +1,20 @@
+{
+  "name": "ca-lobby-webapp",
+  "version": "1.0.0",
+  "description": "California Lobbying Transparency Web Application",
+  "scripts": {
+    "build": "cd webapp/frontend && npm install && npm run build",
+    "start": "cd webapp/backend && python app.py",
+    "install-deps": "cd webapp/frontend && npm install && cd ../backend && pip install -r requirements.txt"
+  },
+  "engines": {
+    "node": ">=16",
+    "npm": ">=7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ingramml/CA_lobby.git"
+  },
+  "author": "Michael Ingram",
+  "license": "MIT"
+}

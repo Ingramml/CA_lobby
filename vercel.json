@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "name": "ca-lobby-demo",
+  "builds": [
+    {
+      "src": "webapp/frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    },
+    {
+      "src": "webapp/backend/app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/webapp/backend/app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/webapp/frontend/$1"
+    }
+  ],
+  "functions": {
+    "webapp/backend/app.py": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "PYTHONPATH": "./webapp/backend"
+  },
+  "github": {
+    "enabled": true
+  }
+}
