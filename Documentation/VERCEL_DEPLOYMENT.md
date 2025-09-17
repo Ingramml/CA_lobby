@@ -1,6 +1,11 @@
-# Deploy California Lobbying Website to Vercel
+# Deploy California Lobbying Website to Vercel (CLI Method)
 
 ## Quick Start (5 minutes)
+
+**Prerequisites:**
+- Node.js 18+ installed
+- Git repository with latest changes committed
+- Vercel account (free tier sufficient)
 
 ### Step 1: Install Vercel CLI
 ```bash
@@ -15,101 +20,226 @@ vercel login
 
 ### Step 3: Deploy
 ```bash
-cd /Users/michaelingram/Documents/GitHub/CA_lobby/webapp
+# Navigate to project root (not webapp subdirectory)
+cd /Users/michaelingram/Documents/GitHub/CA_lobby
 vercel
 ```
 
 When prompted:
 - **Set up and deploy?** → Yes
 - **Which scope?** → Choose your account
-- **Link to existing project?** → No
-- **Project name?** → `ca-lobby` (or whatever you prefer)
-- **Directory to deploy?** → `.` (current directory)
+- **Link to existing project?** → No (for first deployment)
+- **Project name?** → `ca-lobby` (or your preferred name)
+- **In which directory is your code located?** → `./` (root directory)
+
+**Note**: Vercel will automatically detect your `vercel.json` configuration file and use the specified build settings.
 
 That's it! Vercel will provide you with a live URL.
 
 ## Environment Variables Setup
 
-After deployment, set up your environment variables in Vercel dashboard:
+You can set environment variables either through the CLI or Vercel dashboard:
 
+### Option 1: CLI Method (Recommended for 2025)
+```bash
+# Set required variables
+vercel env add FLASK_ENV production
+vercel env add JWT_SECRET_KEY your-secure-jwt-secret-2025
+vercel env add PYTHONPATH ./webapp/backend
+
+# For demo mode (optional)
+vercel env add USE_MOCK_DATA true
+
+# For BigQuery integration (production)
+vercel env add GOOGLE_CLOUD_PROJECT your-project-id
+vercel env add BIGQUERY_DATASET ca_lobby
+```
+
+### Option 2: Dashboard Method
 1. Go to your project on [vercel.com](https://vercel.com)
 2. Click **Settings** → **Environment Variables**
-3. Add these variables:
+3. Add the same variables as shown above
 
 ### Required Variables
-```
-FLASK_ENV=production
-JWT_SECRET_KEY=your-super-secret-jwt-key-here
-GOOGLE_CLOUD_PROJECT=your-project-id
-BIGQUERY_DATASET=ca_lobby
-```
+- `FLASK_ENV`: Set to `production`
+- `JWT_SECRET_KEY`: Secure secret key for JWT tokens
+- `PYTHONPATH`: Set to `./webapp/backend`
 
-### Optional Variables (for production)
-```
-REDIS_URL=redis://your-redis-url
-CREDENTIALS_LOCATION=path-to-your-google-credentials
-RATE_LIMIT_PER_MINUTE=100
-```
+### Optional Variables
+- `USE_MOCK_DATA`: Set to `true` for demo mode
+- `GOOGLE_CLOUD_PROJECT`: Your Google Cloud project ID
+- `BIGQUERY_DATASET`: Dataset name (typically `ca_lobby`)
+- `CREDENTIALS_LOCATION`: Path to Google Cloud credentials
 
 ## What Happens During Deployment
 
-1. **Frontend**: React app builds automatically and serves from CDN
-2. **Backend**: Python Flask API runs as serverless functions
-3. **Routing**: API calls to `/api/*` go to Python, everything else to React
+1. **Build Process**:
+   - Vercel reads your `vercel.json` configuration
+   - Frontend builds: `cd webapp/frontend && npm run build`
+   - Output served from: `webapp/frontend/build`
 
-## Common Issues & Solutions
+2. **Serverless Functions**:
+   - Python Flask app (`webapp/backend/app.py`) becomes serverless function
+   - Runtime: Python 3.9
+   - Max duration: 30 seconds
+   - Auto-scaling with zero configuration
+
+3. **Routing (2025 Configuration)**:
+   - `/api/*` requests → Python Flask serverless function
+   - All other requests → React app (SPA routing)
+   - Automatic HTTPS and global CDN
+   - Edge locations for optimal performance
+
+## Common Issues & Solutions (2025 Updated)
 
 ### Issue: Build Fails
-**Solution**: Check that all dependencies are in package.json and requirements.txt
+**Solutions**:
+- Verify `package.json` exists in `webapp/frontend/`
+- Check `requirements.txt` exists in `webapp/backend/`
+- Ensure Node.js version is 18+ compatible
+- Verify `vercel.json` is in project root
+
+### Issue: Function Timeouts
+**Solutions**:
+- Optimize database queries (30s max duration)
+- Use connection pooling for BigQuery
+- Consider Edge Runtime for faster startup
+- Implement request caching where appropriate
 
 ### Issue: API Not Working
-**Solution**: Ensure environment variables are set in Vercel dashboard
+**Solutions**:
+- Check Function logs in Vercel dashboard
+- Verify environment variables are set correctly
+- Test API endpoints with `curl` or Postman
+- Ensure CORS configuration allows frontend domain
 
-### Issue: BigQuery Connection Fails
-**Solution**: Add your Google Cloud credentials as environment variables
+### Issue: Cold Start Performance
+**Solutions** (2025 Best Practices):
+- Use Edge Runtime: Add `"runtime": "edge"` to function config
+- Implement connection reuse in Python
+- Consider Vercel's Serverless Function warming
+- Use Edge Config for frequently accessed data
 
 ## Local Development vs Production
 
-- **Local**: Frontend runs on :3000, backend on :5000
-- **Vercel**: Everything runs on your Vercel domain (e.g., ca-lobby.vercel.app)
+### Local Environment
+- **Frontend**: React dev server on `http://localhost:3000`
+- **Backend**: Flask dev server on `http://localhost:5000`
+- **API Proxy**: Frontend proxies `/api/*` to backend
 
-## Updating Your Site
+### Vercel Production Environment
+- **Frontend**: Served from global CDN
+- **Backend**: Serverless functions in AWS Lambda
+- **Domain**: Your assigned Vercel domain (e.g., `ca-lobby.vercel.app`)
+- **HTTPS**: Automatic SSL certificate
+- **Performance**: Edge locations worldwide
 
-Simply run:
+## Updating Your Site (2025 Workflow)
+
+### Manual Deployment
 ```bash
+# Deploy to preview (for testing)
+vercel
+
+# Deploy to production
 vercel --prod
 ```
 
-Or push to your connected Git repository (Vercel will auto-deploy).
+### Automatic Deployment (Recommended)
+1. Connect your Git repository in Vercel dashboard
+2. Push to main branch for automatic production deployment
+3. Push to feature branches for automatic preview deployments
+4. Use pull request previews for team collaboration
 
-## Free Tier Limits
+### Advanced 2025 Features
+```bash
+# Deploy with specific alias
+vercel --prod --alias ca-lobby-production.vercel.app
 
-Vercel's free tier includes:
-- 100GB bandwidth per month
-- 100 serverless function invocations per day
-- Unlimited static file serving
+# Deploy with environment promotion
+vercel promote <deployment-url> --prod
 
-Perfect for testing and small-scale deployment!
+# Check deployment status
+vercel ls
+
+# View logs
+vercel logs <deployment-url>
+```
+
+## Free Tier Limits (2025 Updated)
+
+Vercel's Hobby tier includes:
+- **Bandwidth**: 100GB per month
+- **Serverless Function Executions**: 100GB-hours per month
+- **Serverless Function Duration**: 10 seconds max (30s with Pro)
+- **Build Time**: 6 hours per month
+- **Static File Serving**: Unlimited
+- **Custom Domains**: Unlimited
+- **SSL Certificates**: Automatic and free
+
+**Note**: Your app uses 30-second functions, which requires Pro tier ($20/month) for full functionality.
 
 ## Next Steps After Deployment
 
-1. **Test all features** with the demo accounts:
-   - guest@ca-lobby.gov / guest
-   - researcher@ca-lobby.gov / research123
+1. **Test Application Functionality**:
+   - Verify dashboard loads correctly
+   - Test search functionality
+   - Check API endpoints respond properly
+   - Validate data export features
 
-2. **Set up custom domain** (optional):
-   - Go to project settings → Domains
-   - Add your custom domain
+2. **Set up Custom Domain** (optional):
+   ```bash
+   # Via CLI
+   vercel domains add yourdomain.com
 
-3. **Monitor usage**:
-   - Check Vercel dashboard for performance metrics
-   - Monitor serverless function usage
+   # Or via dashboard: Settings → Domains
+   ```
 
-## Support
+3. **Monitor Performance** (2025 Tools):
+   - **Vercel Analytics**: Real-time performance metrics
+   - **Function Logs**: Debug serverless function issues
+   - **Edge Network**: Monitor global CDN performance
+   - **Core Web Vitals**: Track user experience metrics
 
-If you run into issues:
-1. Check Vercel deployment logs in the dashboard
-2. Verify environment variables are set correctly
-3. Test locally first with `npm start` in frontend/ and `python app.py` in backend/
+4. **Production Optimizations**:
+   - Enable Vercel Analytics for detailed insights
+   - Set up monitoring alerts for function errors
+   - Configure caching strategies for API responses
+   - Implement error tracking (Sentry integration)
 
-Your California lobbying transparency website will be live and accessible to the public!
+## Support and Troubleshooting
+
+### Debugging Steps
+1. **Check Deployment Status**:
+   ```bash
+   vercel ls
+   vercel inspect <deployment-url>
+   ```
+
+2. **View Logs**:
+   ```bash
+   vercel logs <deployment-url>
+   vercel logs --follow  # Real-time logs
+   ```
+
+3. **Local Testing**:
+   ```bash
+   # Frontend
+   cd webapp/frontend && npm start
+
+   # Backend
+   cd webapp/backend && python app.py
+   ```
+
+4. **Verify Configuration**:
+   - Check `vercel.json` syntax
+   - Validate environment variables
+   - Test function endpoints locally
+
+### Additional Resources (2025)
+- **Vercel CLI Documentation**: https://vercel.com/docs/cli
+- **Serverless Functions Guide**: https://vercel.com/docs/functions
+- **Edge Runtime**: https://vercel.com/docs/functions/edge-runtime
+- **Performance Monitoring**: https://vercel.com/docs/analytics
+
+Your California lobbying transparency website will be live with enterprise-grade performance, security, and global availability!

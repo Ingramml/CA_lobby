@@ -1,11 +1,13 @@
 # Deploy to Vercel via Web Interface - Step by Step Guide
 
-## 📋 Prerequisites
-- [x] GitHub repository with your webapp code
-- [x] Vercel account (free tier is sufficient)
-- [x] All configuration files are ready
+## Prerequisites
+- GitHub repository with your webapp code
+- Vercel account (free tier is sufficient)
+- Root vercel.json configuration file is properly set up
+- Node.js 18+ for the React frontend
+- Python 3.9 runtime for serverless functions
 
-## 🚀 Step-by-Step Deployment Instructions
+## Step-by-Step Deployment Instructions
 
 ### Step 1: Access Vercel Dashboard
 1. Go to [vercel.com](https://vercel.com)
@@ -18,28 +20,41 @@
    - Authorize Vercel to access your repositories
 
 2. **Select Your Repository**:
-   - Find **"Ingramml/CA_lobby"** in the repository list
+   - Find your **CA_lobby** repository in the list
    - Click **"Import"** next to it
 
 ### Step 3: Configure Project Settings
 1. **Project Configuration Screen**:
-   - **Project Name**: `ca-lobby-demo` (or choose your preferred name)
-   - **Framework Preset**: Select **"Other"** (since it's a custom setup)
+   - **Project Name**: `ca-lobby` (or choose your preferred name)
+   - **Framework Preset**: Select **"Other"** (custom React + Python setup)
    - **Root Directory**: Leave as **"/"** (root)
    - **Build and Output Settings**:
-     - Build Command: `cd webapp/frontend && npm install && npm run build`
+     - Build Command: `cd webapp/frontend && npm run build`
      - Output Directory: `webapp/frontend/build`
-     - Install Command: `cd webapp/frontend && npm install`
+     - Install Command: `npm install --prefix webapp/frontend`
+     - Node.js Version: `18.x` (or latest LTS)
 
 ### Step 4: Set Environment Variables
 Before deploying, click **"Environment Variables"** and add:
 
+**Required Variables:**
 | Name | Value | Environment |
 |------|-------|-------------|
 | `FLASK_ENV` | `production` | Production |
-| `JWT_SECRET_KEY` | `ca-lobby-demo-jwt-secret-2024` | Production |
-| `USE_MOCK_DATA` | `true` | Production |
+| `JWT_SECRET_KEY` | `your-secure-jwt-secret-key-2025` | Production |
 | `PYTHONPATH` | `./webapp/backend` | Production |
+
+**Optional Variables (for demo mode):**
+| Name | Value | Environment |
+|------|-------|-------------|
+| `USE_MOCK_DATA` | `true` | Production |
+
+**For Production BigQuery Integration:**
+| Name | Value | Environment |
+|------|-------|-------------|
+| `GOOGLE_CLOUD_PROJECT` | `your-project-id` | Production |
+| `BIGQUERY_DATASET` | `ca_lobby` | Production |
+| `CREDENTIALS_LOCATION` | `/path/to/credentials.json` | Production |
 
 ### Step 5: Deploy
 1. Click **"Deploy"** button
@@ -55,20 +70,22 @@ Once deployment is complete:
    - Navigate to Search and Reports sections
    - All features should work with mock data
 
-## 🎯 Expected Results
+## Expected Results
 
-**✅ Live Demo Features:**
+**Live Application Features:**
 - California Lobbying Transparency Dashboard
-- Advanced search interface with 3 tabs
+- Advanced search interface with multiple filters
 - Pre-built and custom reports
-- Export functionality (mock)
+- Data export functionality
 - Responsive design for all devices
+- JWT-based authentication system
 
-**✅ Demo Accounts** (automatically logged in as Admin):
-- Full access to all features
-- No authentication required for testing
+**API Endpoints:**
+- All `/api/*` routes handled by Python Flask serverless functions
+- 30-second timeout for complex queries
+- CORS properly configured for frontend-backend communication
 
-## 📱 Sharing Your Demo
+## Sharing Your Application
 
 Once deployed, you can share the Vercel URL with:
 - Colleagues and stakeholders
@@ -76,24 +93,49 @@ Once deployed, you can share the Vercel URL with:
 - As a portfolio piece
 - For demonstration purposes
 
-## 🔧 Troubleshooting
+## Troubleshooting
+
+### 2025 Vercel Platform Notes
+- Functions automatically scale with zero cold start
+- Edge runtime available for improved performance
+- Automatic HTTPS and CDN distribution
+- Built-in analytics and monitoring
 
 **If deployment fails:**
 1. Check build logs in Vercel dashboard
-2. Ensure all files were committed to GitHub
-3. Verify environment variables are set correctly
+2. Ensure vercel.json is in the root directory
+3. Verify Node.js version compatibility (18+)
+4. Check that requirements.txt exists in webapp/backend/
+5. Confirm all dependencies are properly listed
 
-**If site loads but features don't work:**
-1. Check browser console for errors
-2. Verify API routes are accessible at `/api/`
-3. Confirm environment variables are applied
+**If site loads but API doesn't work:**
+1. Check Function logs in Vercel dashboard
+2. Verify `/api/*` routes are accessible
+3. Confirm Python 3.9 runtime is working
+4. Check serverless function timeout (30s max)
+5. Validate environment variables in dashboard
 
-## 🔄 Updates and Redeployment
+**Common 2025 Issues:**
+- **Cold starts**: Use Edge Runtime for faster startup
+- **Function timeouts**: Optimize queries or use streaming
+- **CORS errors**: Verify frontend/backend origins match
+- **Build failures**: Check Node.js and Python versions
+
+## Updates and Redeployment
 
 **For future updates:**
 1. Make changes to your code locally
-2. Commit and push to GitHub
-3. Vercel will automatically redeploy (if auto-deployment is enabled)
-4. Or manually redeploy from Vercel dashboard
+2. Test locally with `npm start` (frontend) and `python app.py` (backend)
+3. Commit and push to GitHub
+4. Vercel will automatically redeploy from your main branch
+5. Use preview deployments for feature branches
+6. Monitor deployment status in Vercel dashboard
 
-Your California Lobbying Transparency demo site will be live and ready to showcase!
+**Performance Optimization (2025 Best Practices):**
+- Enable Edge Functions for faster API responses
+- Use Vercel Analytics for real-time monitoring
+- Implement ISR (Incremental Static Regeneration) for dynamic data
+- Leverage Vercel's Image Optimization for better performance
+- Use Edge Config for global configuration management
+
+Your California Lobbying Transparency application will be live with enterprise-grade performance and reliability!

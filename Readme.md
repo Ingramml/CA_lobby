@@ -1,7 +1,10 @@
 
-# California Lobbying Data Pipeline
+# California Lobbying Data Pipeline & Web Application
 
-A Python-based ETL pipeline that automates the download, processing, and upload of California lobbying disclosure data from Big Local News to Google BigQuery.
+A comprehensive platform for California lobbying transparency, featuring:
+- **ETL Pipeline**: Python-based data processing from Big Local News to Google BigQuery
+- **Web Application**: React/Flask application for public data access and analysis
+- **Vercel Deployment**: Production-ready deployment configuration
 
 ## Overview
 
@@ -101,8 +104,15 @@ CA_lobby/
 ├── fileselector.py         # File selection utility
 ├── Downloaded_files/       # Data storage directory
 ├── SQL Queries/           # Analysis queries
-├── requirements.txt       # Python dependencies
-└── .env                  # Environment variables (create this)
+├── webapp/                # Web application (deployable to Vercel)
+│   ├── frontend/         # React TypeScript application
+│   ├── backend/          # Python Flask API
+│   ├── build.sh         # Build script
+│   ├── start.sh         # Local development script
+│   └── README.md        # Web app documentation
+├── vercel.json           # Vercel deployment configuration
+├── requirements.txt      # Python dependencies
+└── .env                 # Environment variables (create this)
 ```
 
 ## Configuration
@@ -142,6 +152,81 @@ The pipeline includes comprehensive error handling for:
 4. Add tests if applicable
 5. Submit a pull request
 
+## Web Application Deployment
+
+This project includes a modern web application for accessing California lobbying data, built with React and Python Flask. The application is configured for deployment on Vercel.
+
+### Vercel Configuration
+
+The project uses the following Vercel configuration (vercel.json):
+
+```json
+{
+  "buildCommand": "cd webapp/frontend && npm run build",
+  "outputDirectory": "webapp/frontend/build",
+  "functions": {
+    "webapp/backend/app.py": {
+      "runtime": "python3.9",
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/webapp/backend/app.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "PYTHONPATH": "./webapp/backend"
+  }
+}
+```
+
+### Key Configuration Features (2025 Best Practices)
+
+- **Python 3.9 Runtime**: Specified for backend functions with 30-second timeout
+- **Optimized Build Process**: Frontend builds in webapp/frontend directory
+- **API Routing**: All /api/* requests route to Python backend
+- **SPA Support**: React Router compatibility with fallback to index.html
+- **Environment Variables**: PYTHONPATH configured for proper module imports
+
+### Deployment Instructions
+
+1. **Connect to Vercel**:
+   ```bash
+   npm i -g vercel
+   vercel
+   ```
+
+2. **Set Environment Variables** in Vercel Dashboard:
+   - `FLASK_ENV=production`
+   - `JWT_SECRET_KEY=your-secure-key`
+   - `USE_MOCK_DATA=true` (for demo without BigQuery)
+
+3. **Deploy**:
+   ```bash
+   vercel --prod
+   ```
+
+### Local Development
+
+```bash
+# Install Vercel CLI and start development server
+npm i -g vercel
+vercel dev
+
+# Or run components separately:
+# Frontend
+cd webapp/frontend && npm start
+
+# Backend
+cd webapp/backend && python app.py
+```
+
 ## License
 
 This project is for educational and research purposes. Please respect Big Local News terms of service and Google Cloud usage policies.
@@ -151,4 +236,5 @@ This project is for educational and research purposes. Please respect Big Local 
 For issues or questions:
 1. Check existing issues in the repository
 2. Review the detailed documentation in `CODEBASE_DOCUMENTATION.md`
-3. Create a new issue with detailed information about your problem
+3. For web application issues, see `webapp/README.md`
+4. Create a new issue with detailed information about your problem

@@ -3,6 +3,7 @@
   "outputDirectory": "webapp/frontend/build",
   "functions": {
     "webapp/backend/app.py": {
+      "runtime": "python3.9",
       "maxDuration": 30
     }
   },
@@ -10,6 +11,10 @@
     {
       "source": "/api/(.*)",
       "destination": "/webapp/backend/app.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "env": {

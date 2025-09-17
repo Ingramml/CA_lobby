@@ -1,6 +1,14 @@
 # California Lobbying Transparency Web Application
 
-This is a full-stack web application for exploring California lobbying data with advanced search, reporting, and visualization capabilities.
+This is a production-ready full-stack web application for exploring California lobbying data with advanced search, reporting, and visualization capabilities. Built with React 18/TypeScript and Python Flask, optimized for Vercel deployment following 2025 best practices.
+
+**Key Improvements Made**:
+- ✅ Removed conflicting webapp/vercel.json file
+- ✅ Fixed frontend build script (eliminated file copying)
+- ✅ Updated backend to use relative path imports
+- ✅ Added Python 3.9 runtime specification
+- ✅ Optimized routing configuration for frontend/backend separation
+- ✅ Implemented proper PYTHONPATH environment variable
 
 ## Demo Features
 

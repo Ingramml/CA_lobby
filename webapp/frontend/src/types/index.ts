@@ -4,8 +4,10 @@ export interface User {
   email: string;
   role: UserRole;
   name: string;
-  isActive: boolean;
+  isActive?: boolean;
   lastLogin?: Date;
+  permissions?: Permissions;
+  createdAt?: Date;
 }
 
 export enum UserRole {
