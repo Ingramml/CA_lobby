@@ -2,30 +2,43 @@
 Dashboard API endpoints
 Provides statistics and activity data for the main dashboard
 """
-from flask import Blueprint, jsonify, current_app
+import logging
+from flask import Blueprint, jsonify, current_app, request, g
 from flask_jwt_extended import jwt_required, get_jwt
 from datetime import datetime, timedelta
 import json
+
+# Create logger for this module
+logger = logging.getLogger('ca_lobby_app.dashboard')
 
 bp = Blueprint('dashboard', __name__)
 
 def get_cached_stats():
     """Get cached dashboard stats from Redis"""
+    logger.debug("🗂️ Attempting to retrieve cached dashboard stats")
+
     if not current_app.redis_client:
+        logger.debug("⚠️ Redis client not available - no cache lookup")
         return None
 
     try:
         cached_data = current_app.redis_client.get('dashboard_stats')
         if cached_data:
+            logger.info("✅ Dashboard stats retrieved from cache")
             return json.loads(cached_data)
+        else:
+            logger.debug("🔍 No cached dashboard stats found")
     except Exception as e:
-        current_app.logger.warning(f"Failed to get cached stats: {e}")
+        logger.warning(f"❌ Failed to get cached stats: {e}")
 
     return None
 
 def cache_stats(stats_data, ttl=900):  # Cache for 15 minutes
     """Cache dashboard stats in Redis"""
+    logger.debug(f"💾 Attempting to cache dashboard stats (TTL: {ttl}s)")
+
     if not current_app.redis_client:
+        logger.debug("⚠️ Redis client not available - skipping cache")
         return
 
     try:
@@ -34,12 +47,16 @@ def cache_stats(stats_data, ttl=900):  # Cache for 15 minutes
             ttl,
             json.dumps(stats_data, default=str)
         )
+        logger.info(f"✅ Dashboard stats cached successfully for {ttl} seconds")
     except Exception as e:
-        current_app.logger.warning(f"Failed to cache stats: {e}")
+        logger.warning(f"❌ Failed to cache stats: {e}")
 
 def execute_bigquery_stats():
     """Execute BigQuery queries to get dashboard statistics"""
+    logger.info("📊 Executing BigQuery queries for dashboard statistics")
+
     if not current_app.bigquery_client:
+        logger.warning("⚠️ BigQuery client not available - using mock data")
         return generate_mock_stats()
 
     try:
@@ -78,9 +95,16 @@ def execute_bigquery_stats():
         """
 
         # Execute queries
+        logger.debug("🔄 Executing total filings query")
         total_filings_result = current_app.bigquery_client.query(total_filings_query).to_dataframe()
+
+        logger.debug("🔄 Executing total payments query")
         total_payments_result = current_app.bigquery_client.query(total_payments_query).to_dataframe()
+
+        logger.debug("🔄 Executing active lobbyists query")
         active_lobbyists_result = current_app.bigquery_client.query(active_lobbyists_query).to_dataframe()
+
+        logger.debug("🔄 Executing latest period query")
         latest_period_result = current_app.bigquery_client.query(latest_period_query).to_dataframe()
 
         # Recent activity query
@@ -98,9 +122,11 @@ def execute_bigquery_stats():
         LIMIT 10
         """
 
+        logger.debug("🔄 Executing recent activity query")
         recent_activity_result = current_app.bigquery_client.query(recent_activity_query).to_dataframe()
 
         # Process results
+        logger.debug("📊 Processing BigQuery results")
         stats = {
             'totalFilings': int(total_filings_result.iloc[0]['total_filings']) if not total_filings_result.empty else 0,
             'totalPayments': float(total_payments_result.iloc[0]['total_payments'] or 0) if not total_payments_result.empty else 0,
@@ -109,7 +135,10 @@ def execute_bigquery_stats():
             'recentActivity': []
         }
 
+        logger.info(f"📈 BigQuery stats results: {stats['totalFilings']} filings, {stats['activeLobbyists']} lobbyists, ${stats['totalPayments']:,.2f} payments")
+
         # Process recent activity
+        logger.debug(f"📋 Processing {len(recent_activity_result)} recent activities")
         for _, row in recent_activity_result.iterrows():
             activity = {
                 'id': f"{row['filing_id']}_{row['amend_id']}",
@@ -120,10 +149,12 @@ def execute_bigquery_stats():
             }
             stats['recentActivity'].append(activity)
 
+        logger.info("✅ BigQuery dashboard stats generated successfully")
         return stats
 
     except Exception as e:
-        current_app.logger.error(f"BigQuery stats error: {e}")
+        logger.error(f"💥 BigQuery stats error: {e}", exc_info=True)
+        logger.warning("🔄 Falling back to mock data")
         return generate_mock_stats()
 
 def determine_activity_type(amend_id):
@@ -135,6 +166,7 @@ def determine_activity_type(amend_id):
 
 def generate_mock_stats():
     """Generate mock statistics for development/demo purposes"""
+    logger.info("🎭 Generating mock dashboard statistics")
     base_date = datetime.now()
 
     mock_activities = []
@@ -169,22 +201,27 @@ def generate_mock_stats():
 @bp.route('/stats', methods=['GET'])
 def get_dashboard_stats():
     """Get dashboard statistics"""
+    logger.info(f"📊 Dashboard stats requested - IP: {request.remote_addr}")
+
     try:
         # Try to get cached stats first
         cached_stats = get_cached_stats()
         if cached_stats:
+            logger.info("✅ Returning cached dashboard stats")
             return jsonify({
                 'success': True,
                 'data': cached_stats,
                 'cached': True
             }), 200
 
+        logger.info("🔄 Generating fresh dashboard stats")
         # Generate fresh stats
         stats = execute_bigquery_stats()
 
         # Cache the results
         cache_stats(stats)
 
+        logger.info("✅ Fresh dashboard stats generated and cached")
         return jsonify({
             'success': True,
             'data': stats,
@@ -192,7 +229,7 @@ def get_dashboard_stats():
         }), 200
 
     except Exception as e:
-        current_app.logger.error(f"Dashboard stats error: {str(e)}")
+        logger.error(f"💥 Dashboard stats error for IP {request.remote_addr}: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'message': 'Failed to load dashboard statistics'
@@ -202,12 +239,18 @@ def get_dashboard_stats():
 @jwt_required(optional=True)  # Optional JWT for public access
 def get_recent_activity():
     """Get detailed recent activity feed"""
+    logger.info(f"📋 Recent activity requested - IP: {request.remote_addr}")
+
     try:
         # Get user info if authenticated
         user_role = 'GUEST'
+        user_email = 'anonymous'
         if get_jwt():
             claims = get_jwt()
             user_role = claims.get('role', 'GUEST')
+            user_email = claims.get('email', 'unknown')
+
+        logger.info(f"👤 Activity request from user: {user_email} with role: {user_role}")
 
         # Determine activity limit based on user role
         activity_limits = {
@@ -219,8 +262,10 @@ def get_recent_activity():
         }
 
         limit = activity_limits.get(user_role, 5)
+        logger.debug(f"🔢 Activity limit for role {user_role}: {limit}")
 
         if current_app.bigquery_client:
+            logger.debug("📊 Querying BigQuery for recent activity")
             # Query recent activity from BigQuery
             activity_query = f"""
             SELECT
@@ -239,6 +284,7 @@ def get_recent_activity():
             """
 
             result = current_app.bigquery_client.query(activity_query).to_dataframe()
+            logger.info(f"📊 BigQuery returned {len(result)} activities")
 
             activities = []
             for _, row in result.iterrows():
@@ -258,17 +304,19 @@ def get_recent_activity():
                 activities.append(activity)
 
         else:
+            logger.info("🎭 Using mock data for recent activity")
             # Use mock data
             stats = generate_mock_stats()
             activities = stats['recentActivity'][:limit]
 
+        logger.info(f"✅ Recent activity returned: {len(activities)} items for user {user_email}")
         return jsonify({
             'success': True,
             'data': activities
         }), 200
 
     except Exception as e:
-        current_app.logger.error(f"Recent activity error: {str(e)}")
+        logger.error(f"💥 Recent activity error for IP {request.remote_addr}: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'message': 'Failed to load recent activity'
@@ -300,8 +348,21 @@ def create_activity_description(row):
 @jwt_required(optional=True)
 def get_dashboard_summary():
     """Get a comprehensive dashboard summary"""
+    logger.info(f"📋 Dashboard summary requested - IP: {request.remote_addr}")
+
     try:
+        # Get user info if authenticated
+        user_role = 'GUEST'
+        user_email = 'anonymous'
+        if get_jwt():
+            claims = get_jwt()
+            user_role = claims.get('role', 'GUEST')
+            user_email = claims.get('email', 'unknown')
+
+        logger.info(f"👤 Summary request from user: {user_email} with role: {user_role}")
+
         # Get basic stats
+        logger.debug("📊 Fetching basic stats for summary")
         stats = execute_bigquery_stats()
 
         # Add additional summary information
@@ -316,8 +377,7 @@ def get_dashboard_summary():
 
         # Add user-specific information if authenticated
         if get_jwt():
-            claims = get_jwt()
-            user_role = claims.get('role', 'GUEST')
+            logger.debug(f"🔧 Adding role-specific capabilities for {user_role}")
 
             # Add role-specific capabilities
             role_capabilities = {
@@ -330,14 +390,17 @@ def get_dashboard_summary():
 
             summary['userRole'] = user_role
             summary['capabilities'] = role_capabilities.get(user_role, [])
+        else:
+            logger.debug("🔒 Anonymous user - using guest capabilities")
 
+        logger.info(f"✅ Dashboard summary generated for user: {user_email}")
         return jsonify({
             'success': True,
             'data': summary
         }), 200
 
     except Exception as e:
-        current_app.logger.error(f"Dashboard summary error: {str(e)}")
+        logger.error(f"💥 Dashboard summary error for IP {request.remote_addr}: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'message': 'Failed to load dashboard summary'

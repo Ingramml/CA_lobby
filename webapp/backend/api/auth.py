@@ -2,11 +2,15 @@
 Authentication API endpoints
 Handles user login, logout, and token management
 """
-from flask import Blueprint, request, jsonify, current_app
+import logging
+from flask import Blueprint, request, jsonify, current_app, g
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime, timedelta
 import uuid
+
+# Create logger for this module
+logger = logging.getLogger('ca_lobby_app.auth')
 
 bp = Blueprint('auth', __name__)
 
@@ -71,10 +75,14 @@ def update_last_login(email):
 @bp.route('/login', methods=['POST'])
 def login():
     """User login endpoint"""
+    request_id = getattr(g, 'request_id', 'unknown')
+    logger.info(f"🔐 Login attempt initiated - IP: {request.remote_addr}")
+
     try:
         data = request.get_json()
 
         if not data:
+            logger.warning(f"❌ Login failed - No request body provided")
             return jsonify({
                 'success': False,
                 'message': 'Request body is required'
@@ -84,7 +92,10 @@ def login():
         password = data.get('password', '')
         role = data.get('role', 'PUBLIC')
 
+        logger.info(f"🔍 Login attempt for email: {email} with role: {role}")
+
         if not email or not password:
+            logger.warning(f"❌ Login failed - Missing credentials for email: {email}")
             return jsonify({
                 'success': False,
                 'message': 'Email and password are required'
@@ -94,6 +105,7 @@ def login():
         user = get_user_by_email(email)
 
         if not user:
+            logger.warning(f"❌ Login failed - User not found: {email}")
             return jsonify({
                 'success': False,
                 'message': 'Invalid email or password'
@@ -101,6 +113,7 @@ def login():
 
         # Check password
         if not check_password_hash(user['password_hash'], password):
+            logger.warning(f"❌ Login failed - Invalid password for user: {email}")
             return jsonify({
                 'success': False,
                 'message': 'Invalid email or password'
@@ -108,6 +121,7 @@ def login():
 
         # Check if user is active
         if not user.get('is_active', False):
+            logger.warning(f"❌ Login failed - Account deactivated: {email}")
             return jsonify({
                 'success': False,
                 'message': 'Account is deactivated'
@@ -115,6 +129,7 @@ def login():
 
         # Verify role matches (for role-based login)
         if user['role'] != role:
+            logger.warning(f"❌ Login failed - Role mismatch for {email}: expected {role}, user has {user['role']}")
             return jsonify({
                 'success': False,
                 'message': 'Invalid role for this account'
@@ -122,6 +137,7 @@ def login():
 
         # Update last login
         update_last_login(email)
+        logger.debug(f"📅 Updated last login time for user: {email}")
 
         # Create access token
         access_token = create_access_token(
@@ -133,6 +149,8 @@ def login():
             }
         )
 
+        logger.info(f"🎫 JWT token created for user: {email} with role: {user['role']}")
+
         # Return user data and token
         user_data = {
             'id': user['id'],
@@ -143,6 +161,7 @@ def login():
             'lastLogin': user['last_login'].isoformat() if user['last_login'] else None
         }
 
+        logger.info(f"✅ Login successful for user: {email} with role: {user['role']}")
         return jsonify({
             'success': True,
             'message': 'Login successful',
@@ -153,7 +172,7 @@ def login():
         }), 200
 
     except Exception as e:
-        current_app.logger.error(f"Login error: {str(e)}")
+        logger.error(f"💥 Login error for IP {request.remote_addr}: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'message': 'An error occurred during login'
@@ -163,8 +182,14 @@ def login():
 @jwt_required()
 def logout():
     """User logout endpoint - blacklists the current token"""
+    logger.info(f"🚪 Logout request initiated - IP: {request.remote_addr}")
+
     try:
-        jti = get_jwt()['jti']
+        claims = get_jwt()
+        jti = claims['jti']
+        user_email = claims.get('email', 'unknown')
+
+        logger.info(f"🔓 Processing logout for user: {user_email}")
 
         # Add token to blacklist in Redis if available
         if current_app.redis_client:
@@ -174,14 +199,18 @@ def logout():
                 'blacklisted',
                 ex=current_app.config['JWT_ACCESS_TOKEN_EXPIRES']
             )
+            logger.info(f"🚫 Token blacklisted in Redis for user: {user_email} - JTI: {jti[:8]}...")
+        else:
+            logger.warning(f"⚠️ Redis not available - token not blacklisted for user: {user_email}")
 
+        logger.info(f"✅ Logout successful for user: {user_email}")
         return jsonify({
             'success': True,
             'message': 'Successfully logged out'
         }), 200
 
     except Exception as e:
-        current_app.logger.error(f"Logout error: {str(e)}")
+        logger.error(f"💥 Logout error for IP {request.remote_addr}: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'message': 'An error occurred during logout'
@@ -191,9 +220,14 @@ def logout():
 @jwt_required()
 def get_current_user():
     """Get current user information"""
+    logger.debug(f"👤 Get current user request - IP: {request.remote_addr}")
+
     try:
         user_id = get_jwt_identity()
         claims = get_jwt()
+        user_email = claims.get('email', 'unknown')
+
+        logger.debug(f"🔍 Fetching user info for: {user_email}")
 
         # In a real application, you'd fetch this from a database
         user_data = {
@@ -205,13 +239,14 @@ def get_current_user():
             'lastLogin': datetime.utcnow().isoformat()
         }
 
+        logger.debug(f"✅ User info retrieved for: {user_email}")
         return jsonify({
             'success': True,
             'data': user_data
         }), 200
 
     except Exception as e:
-        current_app.logger.error(f"Get current user error: {str(e)}")
+        logger.error(f"💥 Get current user error for IP {request.remote_addr}: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'message': 'Failed to get user information'
@@ -221,9 +256,15 @@ def get_current_user():
 @jwt_required()
 def refresh_token():
     """Refresh access token"""
+    logger.info(f"🔄 Token refresh request - IP: {request.remote_addr}")
+
     try:
         current_user_id = get_jwt_identity()
         claims = get_jwt()
+        user_email = claims.get('email', 'unknown')
+        old_jti = claims.get('jti', 'unknown')
+
+        logger.info(f"🎫 Refreshing token for user: {user_email} - Old JTI: {old_jti[:8]}...")
 
         # Create new access token with same claims
         new_access_token = create_access_token(
@@ -235,6 +276,7 @@ def refresh_token():
             }
         )
 
+        logger.info(f"✅ New token created for user: {user_email}")
         return jsonify({
             'success': True,
             'data': {
@@ -243,7 +285,7 @@ def refresh_token():
         }), 200
 
     except Exception as e:
-        current_app.logger.error(f"Token refresh error: {str(e)}")
+        logger.error(f"💥 Token refresh error for IP {request.remote_addr}: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'message': 'Failed to refresh token'
@@ -253,10 +295,15 @@ def refresh_token():
 @jwt_required()
 def validate_token():
     """Validate current token"""
+    logger.debug(f"🔍 Token validation request - IP: {request.remote_addr}")
+
     try:
         user_id = get_jwt_identity()
         claims = get_jwt()
+        user_email = claims.get('email', 'unknown')
+        jti = claims.get('jti', 'unknown')
 
+        logger.debug(f"✅ Token validation successful for user: {user_email} - JTI: {jti[:8]}...")
         return jsonify({
             'success': True,
             'data': {
@@ -268,7 +315,7 @@ def validate_token():
         }), 200
 
     except Exception as e:
-        current_app.logger.error(f"Token validation error: {str(e)}")
+        logger.error(f"💥 Token validation error for IP {request.remote_addr}: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'message': 'Token validation failed'
@@ -311,7 +358,7 @@ def has_permission(required_role=None, required_permission=None):
                 return f(*args, **kwargs)
 
             except Exception as e:
-                current_app.logger.error(f"Permission check error: {str(e)}")
+                logger.error(f"💥 Permission check error for IP {request.remote_addr}: {str(e)}", exc_info=True)
                 return jsonify({
                     'success': False,
                     'message': 'Permission check failed'
