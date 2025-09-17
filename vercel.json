@@ -14,15 +14,29 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/webapp/backend/app.py"
-    },
-    {
       "src": "/manifest.json",
       "dest": "/webapp/frontend/build/manifest.json",
       "headers": {
         "Cache-Control": "public, max-age=86400"
       }
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/webapp/frontend/build/favicon.ico",
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/webapp/frontend/build/robots.txt",
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/webapp/backend/app.py"
     },
     {
       "src": "/static/(.*)",
