@@ -18,6 +18,18 @@
       "dest": "/webapp/backend/app.py"
     },
     {
+      "src": "/manifest.json",
+      "dest": "/webapp/frontend/build/manifest.json"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/webapp/frontend/build/static/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg))",
+      "dest": "/webapp/frontend/build/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/webapp/frontend/build/index.html"
     }
