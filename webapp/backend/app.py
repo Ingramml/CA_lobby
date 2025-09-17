@@ -47,7 +47,11 @@ def create_app(config_name='development'):
     # Initialize extensions
     # Configure CORS for both development and production
     cors_origins = os.getenv('CORS_ORIGINS', 'http://localhost:3000,http://localhost:3001').split(',')
-    CORS(app, origins=cors_origins)
+    # For demo mode, allow all origins from Vercel
+    if os.getenv('USE_MOCK_DATA') == 'true':
+        CORS(app, origins=['*'])
+    else:
+        CORS(app, origins=cors_origins)
     jwt = JWTManager(app)
 
     # Initialize Redis for token blacklisting and caching

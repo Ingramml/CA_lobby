@@ -19,7 +19,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/webapp/frontend/$1"
+      "dest": "/webapp/frontend/build/index.html"
     }
   ],
   "env": {
