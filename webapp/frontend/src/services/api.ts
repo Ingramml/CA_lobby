@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import {
   ApiResponse,
   PaginatedResponse,
@@ -75,7 +75,7 @@ class ApiService {
 
     // Add request interceptor for authentication and logging
     this.api.interceptors.request.use(
-      (config) => {
+      (config: InternalAxiosRequestConfig) => {
         const requestId = this.generateRequestId();
         config.metadata = { startTime: Date.now(), requestId };
 
@@ -106,7 +106,7 @@ class ApiService {
     // Add response interceptor for error handling and logging
     this.api.interceptors.response.use(
       (response) => {
-        const config = response.config as any;
+        const config = response.config as InternalAxiosRequestConfig;
         const duration = config.metadata ? Date.now() - config.metadata.startTime : 0;
         const requestId = config.metadata?.requestId || 'unknown';
 
@@ -121,7 +121,7 @@ class ApiService {
         return response;
       },
       (error: AxiosError) => {
-        const config = error.config as any;
+        const config = error.config as InternalAxiosRequestConfig;
         const duration = config?.metadata ? Date.now() - config.metadata.startTime : 0;
         const requestId = config?.metadata?.requestId || 'unknown';
 
@@ -234,9 +234,9 @@ class ApiService {
   ): Promise<ApiResponse<PaginatedResponse<LobbyingFiling>>> {
     logger.info('🔍 Entity search initiated', {
       searchTerms: {
-        filer: params.filer?.slice(0, 50),
-        firm: params.firm?.slice(0, 50),
-        employer: params.employer?.slice(0, 50)
+        filerName: params.filerName?.slice(0, 50),
+        firmName: params.firmName?.slice(0, 50),
+        employerName: params.employerName?.slice(0, 50)
       },
       page,
       pageSize
@@ -266,10 +266,10 @@ class ApiService {
   ): Promise<ApiResponse<PaginatedResponse<LobbyingFiling>>> {
     logger.info('💰 Financial search initiated', {
       searchCriteria: {
-        minAmount: params.minAmount,
-        maxAmount: params.maxAmount,
-        dateRange: params.startDate && params.endDate ?
-          `${params.startDate} to ${params.endDate}` : 'any'
+        amountMin: params.amountMin,
+        amountMax: params.amountMax,
+        dateRange: params.reportDateFrom && params.reportDateTo ?
+          `${params.reportDateFrom} to ${params.reportDateTo}` : 'any'
       },
       page,
       pageSize
