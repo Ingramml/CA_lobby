@@ -30,7 +30,7 @@ except ImportError as e:
     BIGQUERY_AVAILABLE = False
 
 # Import API modules
-from api import auth, dashboard, search, reports, data, export, admin
+from api import auth, dashboard, search, reports, data, export, admin, logs
 
 # Load environment variables
 load_dotenv()
@@ -229,7 +229,8 @@ def create_app(config_name='development'):
         (reports.bp, '/api/reports', 'Reports'),
         (data.bp, '/api/data', 'Data'),
         (export.bp, '/api/export', 'Export'),
-        (admin.bp, '/api/admin', 'Admin')
+        (admin.bp, '/api/admin', 'Admin'),
+        (logs.bp, '/api/logs', 'Logs')
     ]
 
     for blueprint, prefix, name in blueprints:
@@ -348,6 +349,7 @@ def create_app(config_name='development'):
                 'data': '/api/data/',
                 'export': '/api/export/',
                 'admin': '/api/admin/',
+                'logs': '/api/logs/',
                 'health': '/api/health'
             }
         })
@@ -384,6 +386,7 @@ def create_app(config_name='development'):
     logger.info(f"  - Data: /api/data/*")
     logger.info(f"  - Export: /api/export/*")
     logger.info(f"  - Admin: /api/admin/*")
+    logger.info(f"  - Logs: /api/logs/*")
 
     return app
 

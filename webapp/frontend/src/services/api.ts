@@ -15,43 +15,9 @@ import {
   LoginForm
 } from '../types';
 
-// Logging utility for frontend
-class Logger {
-  private isDevelopment = process.env.NODE_ENV === 'development';
-  private isProduction = process.env.NODE_ENV === 'production';
+import { createLegacyLogger } from './logger';
 
-  private formatMessage(level: string, message: string, data?: any): string {
-    const timestamp = new Date().toISOString();
-    const prefix = `[${timestamp}] [${level}] [CA-Lobby-Frontend]`;
-    return data ? `${prefix} ${message}` : `${prefix} ${message}`;
-  }
-
-  info(message: string, data?: any) {
-    if (this.isDevelopment || this.isProduction) {
-      console.log(this.formatMessage('INFO', message), data || '');
-    }
-  }
-
-  warn(message: string, data?: any) {
-    if (this.isDevelopment || this.isProduction) {
-      console.warn(this.formatMessage('WARN', message), data || '');
-    }
-  }
-
-  error(message: string, error?: any) {
-    if (this.isDevelopment || this.isProduction) {
-      console.error(this.formatMessage('ERROR', message), error || '');
-    }
-  }
-
-  debug(message: string, data?: any) {
-    if (this.isDevelopment) {
-      console.debug(this.formatMessage('DEBUG', message), data || '');
-    }
-  }
-}
-
-const logger = new Logger();
+const logger = createLegacyLogger('API');
 
 class ApiService {
   private api: AxiosInstance;

@@ -2,24 +2,9 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { User, UserRole, AuthState, LoginForm } from '../types';
 import { getUserPermissions } from '../utils/permissions';
 import apiService from '../services/api';
+import { createLegacyLogger } from '../services/logger';
 
-// Frontend logging utility for AuthContext
-const logger = {
-  info: (message: string, data?: any) => {
-    console.log(`[${new Date().toISOString()}] [INFO] [AuthContext] ${message}`, data || '');
-  },
-  warn: (message: string, data?: any) => {
-    console.warn(`[${new Date().toISOString()}] [WARN] [AuthContext] ${message}`, data || '');
-  },
-  error: (message: string, error?: any) => {
-    console.error(`[${new Date().toISOString()}] [ERROR] [AuthContext] ${message}`, error || '');
-  },
-  debug: (message: string, data?: any) => {
-    if (process.env.NODE_ENV === 'development') {
-      console.debug(`[${new Date().toISOString()}] [DEBUG] [AuthContext] ${message}`, data || '');
-    }
-  }
-};
+const logger = createLegacyLogger('AuthContext');
 
 interface AuthContextType extends AuthState {
   login: (credentials: LoginForm) => Promise<boolean>;
