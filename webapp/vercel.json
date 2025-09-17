@@ -1,25 +1,21 @@
 {
-  "version": 2,
-  "name": "ca-lobby-demo",
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/backend/app.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/$1"
-    }
-  ],
   "functions": {
-    "backend/app.py": {
+    "webapp/backend/app.py": {
+      "runtime": "python3.9",
       "maxDuration": 30
     }
   },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/webapp/backend/app.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
   "env": {
-    "PYTHONPATH": "./backend"
-  },
-  "github": {
-    "enabled": true
+    "PYTHONPATH": "./webapp/backend"
   }
 }
