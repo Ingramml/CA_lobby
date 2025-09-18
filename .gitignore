@@ -79,3 +79,5 @@ temp/
 
 # Jupyter notebooks
 .ipynb_checkpoints/
+
+*.md

@@ -2,10 +2,10 @@
   "version": 2,
   "builds": [
     {
-      "src": "webapp/frontend/package.json",
+      "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "build"
+        "distDir": "webapp/frontend/build"
       }
     },
     {
@@ -19,11 +19,19 @@
       "dest": "/webapp/backend/app.py"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "/webapp/frontend/build/static/$1"
+      "src": "/static/js/(.*)",
+      "dest": "/webapp/frontend/build/static/js/$1"
     },
     {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|json))",
+      "src": "/static/css/(.*)",
+      "dest": "/webapp/frontend/build/static/css/$1"
+    },
+    {
+      "src": "/static/media/(.*)",
+      "dest": "/webapp/frontend/build/static/media/$1"
+    },
+    {
+      "src": "/(favicon\\.ico|logo192\\.png|logo512\\.png|manifest\\.json|robots\\.txt)",
       "dest": "/webapp/frontend/build/$1"
     },
     {

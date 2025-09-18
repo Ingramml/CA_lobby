@@ -4,6 +4,7 @@
   "description": "California Lobbying Transparency Web Application",
   "scripts": {
     "build": "cd webapp/frontend && npm install && npm run build",
+    "vercel-build": "cd webapp/frontend && npm install && npm run build",
     "start": "cd webapp/backend && python app.py",
     "install-deps": "cd webapp/frontend && npm install && cd ../backend && pip install -r requirements.txt"
   },
