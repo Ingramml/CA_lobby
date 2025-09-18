@@ -1,0 +1,252 @@
+[
+  {
+    "id": "ASS001",
+    "name": "California Technology Alliance",
+    "type": "Trade Association",
+    "registration_date": "2018-03-15",
+    "status": "Active",
+    "address": "1001 Page Mill Road, Palo Alto, CA 94304",
+    "contact_email": "contact@catech.org",
+    "contact_phone": "(650) 555-0101",
+    "primary_focus": "Technology & Innovation",
+    "member_count": 245,
+    "annual_budget": 2500000,
+    "lobbyists": ["LOB001", "LOB011", "LOB021"],
+    "legislative_priorities": [
+      "AI Regulation",
+      "Data Privacy",
+      "Tech Worker Visas",
+      "Cybersecurity Standards"
+    ],
+    "recent_activity": {
+      "q3_2024_payments": 145000,
+      "q2_2024_payments": 178000,
+      "q1_2024_payments": 203000
+    }
+  },
+  {
+    "id": "ASS002",
+    "name": "Healthcare Advocacy Coalition",
+    "type": "Professional Association",
+    "registration_date": "2015-08-22",
+    "status": "Active",
+    "address": "350 S Figueroa St, Los Angeles, CA 90071",
+    "contact_email": "info@healthcareadvocacy.ca",
+    "contact_phone": "(213) 555-0202",
+    "primary_focus": "Healthcare",
+    "member_count": 89,
+    "annual_budget": 1800000,
+    "lobbyists": ["LOB002", "LOB012", "LOB022"],
+    "legislative_priorities": [
+      "Medicare Expansion",
+      "Healthcare Access",
+      "Mental Health Services",
+      "Drug Pricing Reform"
+    ],
+    "recent_activity": {
+      "q3_2024_payments": 203500,
+      "q2_2024_payments": 189000,
+      "q1_2024_payments": 167500
+    }
+  },
+  {
+    "id": "ASS003",
+    "name": "Renewable Energy Alliance",
+    "type": "Industry Coalition",
+    "registration_date": "2012-11-08",
+    "status": "Active",
+    "address": "1215 K Street, Sacramento, CA 95814",
+    "contact_email": "policy@renewablealliance.org",
+    "contact_phone": "(916) 555-0303",
+    "primary_focus": "Energy & Environment",
+    "member_count": 156,
+    "annual_budget": 3200000,
+    "lobbyists": ["LOB003", "LOB013", "LOB023"],
+    "legislative_priorities": [
+      "Clean Energy Incentives",
+      "Grid Modernization",
+      "Carbon Pricing",
+      "Energy Storage"
+    ],
+    "recent_activity": {
+      "q3_2024_payments": 267200,
+      "q2_2024_payments": 298000,
+      "q1_2024_payments": 234500
+    }
+  },
+  {
+    "id": "ASS004",
+    "name": "Financial Services Institute",
+    "type": "Trade Association",
+    "registration_date": "2010-05-17",
+    "status": "Active",
+    "address": "555 California Street, San Francisco, CA 94104",
+    "contact_email": "advocacy@finservinst.com",
+    "contact_phone": "(415) 555-0404",
+    "primary_focus": "Financial Services",
+    "member_count": 67,
+    "annual_budget": 1500000,
+    "lobbyists": ["LOB004", "LOB014", "LOB024"],
+    "legislative_priorities": [
+      "Banking Modernization",
+      "Fintech Regulation",
+      "Consumer Protection",
+      "Credit Access"
+    ],
+    "recent_activity": {
+      "q3_2024_payments": 103500,
+      "q2_2024_payments": 156000,
+      "q1_2024_payments": 134500
+    }
+  },
+  {
+    "id": "ASS005",
+    "name": "Housing Industry Association",
+    "type": "Industry Association",
+    "registration_date": "2008-01-30",
+    "status": "Active",
+    "address": "18500 Von Karman Ave, Irvine, CA 92612",
+    "contact_email": "government@housingassn.ca",
+    "contact_phone": "(949) 555-0505",
+    "primary_focus": "Real Estate & Housing",
+    "member_count": 234,
+    "annual_budget": 2800000,
+    "lobbyists": ["LOB005", "LOB015", "LOB025"],
+    "legislative_priorities": [
+      "Housing Affordability",
+      "Zoning Reform",
+      "Construction Standards",
+      "Property Tax Policy"
+    ],
+    "recent_activity": {
+      "q3_2024_payments": 375000,
+      "q2_2024_payments": 401000,
+      "q1_2024_payments": 356000
+    }
+  },
+  {
+    "id": "ASS006",
+    "name": "Agricultural Alliance of California",
+    "type": "Trade Association",
+    "registration_date": "2005-07-12",
+    "status": "Active",
+    "address": "2300 River Plaza Dr, Sacramento, CA 95833",
+    "contact_email": "policy@agalliance.org",
+    "contact_phone": "(916) 555-0606",
+    "primary_focus": "Agriculture",
+    "member_count": 189,
+    "annual_budget": 2100000,
+    "lobbyists": ["LOB006", "LOB016", "LOB026"],
+    "legislative_priorities": [
+      "Water Rights",
+      "Farm Labor",
+      "Environmental Compliance",
+      "Trade Policy"
+    ],
+    "recent_activity": {
+      "q3_2024_payments": 234000,
+      "q2_2024_payments": 267000,
+      "q1_2024_payments": 298500
+    }
+  },
+  {
+    "id": "ASS007",
+    "name": "California Education Coalition",
+    "type": "Professional Coalition",
+    "registration_date": "2013-09-25",
+    "status": "Active",
+    "address": "1999 Harrison St, Oakland, CA 94612",
+    "contact_email": "advocacy@caeducation.org",
+    "contact_phone": "(510) 555-0707",
+    "primary_focus": "Education",
+    "member_count": 145,
+    "annual_budget": 1600000,
+    "lobbyists": ["LOB007", "LOB017", "LOB027"],
+    "legislative_priorities": [
+      "School Funding",
+      "Teacher Support",
+      "Educational Technology",
+      "Special Education"
+    ],
+    "recent_activity": {
+      "q3_2024_payments": 170750,
+      "q2_2024_payments": 198000,
+      "q1_2024_payments": 145500
+    }
+  },
+  {
+    "id": "ASS008",
+    "name": "California Transportation Alliance",
+    "type": "Industry Coalition",
+    "registration_date": "2011-04-18",
+    "status": "Active",
+    "address": "100 Oceangate, Long Beach, CA 90802",
+    "contact_email": "government@catrans.org",
+    "contact_phone": "(562) 555-0808",
+    "primary_focus": "Transportation",
+    "member_count": 78,
+    "annual_budget": 1900000,
+    "lobbyists": ["LOB008", "LOB018", "LOB028"],
+    "legislative_priorities": [
+      "Infrastructure Funding",
+      "Public Transit",
+      "Electric Vehicles",
+      "Freight Movement"
+    ],
+    "recent_activity": {
+      "q3_2024_payments": 276000,
+      "q2_2024_payments": 234000,
+      "q1_2024_payments": 298500
+    }
+  },
+  {
+    "id": "ASS009",
+    "name": "Green California Coalition",
+    "type": "Environmental Coalition",
+    "registration_date": "2009-06-03",
+    "status": "Active",
+    "address": "1010 B Street, San Rafael, CA 94901",
+    "contact_email": "policy@greenca.org",
+    "contact_phone": "(415) 555-0909",
+    "primary_focus": "Environment",
+    "member_count": 203,
+    "annual_budget": 2400000,
+    "lobbyists": ["LOB009", "LOB019", "LOB029"],
+    "legislative_priorities": [
+      "Climate Action",
+      "Conservation",
+      "Clean Air Standards",
+      "Waste Reduction"
+    ],
+    "recent_activity": {
+      "q3_2024_payments": 129600,
+      "q2_2024_payments": 187000,
+      "q1_2024_payments": 156000
+    }
+  },
+  {
+    "id": "ASS010",
+    "name": "Industrial Development Coalition",
+    "type": "Industry Association",
+    "registration_date": "2007-10-14",
+    "status": "Active",
+    "address": "3801 University Ave, Riverside, CA 92501",
+    "contact_email": "advocacy@inddev.org",
+    "contact_phone": "(951) 555-1010",
+    "primary_focus": "Manufacturing",
+    "member_count": 112,
+    "annual_budget": 2000000,
+    "lobbyists": ["LOB010", "LOB020", "LOB030"],
+    "legislative_priorities": [
+      "Manufacturing Incentives",
+      "Export Promotion",
+      "Workforce Development",
+      "Regulatory Reform"
+    ],
+    "recent_activity": {
+      "q3_2024_payments": 325500,
+      "q2_2024_payments": 289000,
+      "q1_2024_payments": 267000
+    }
+  }
+]

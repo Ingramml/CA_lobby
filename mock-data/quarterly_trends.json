@@ -1,0 +1,202 @@
+[
+  {
+    "quarter": "Q3 2024",
+    "year": 2024,
+    "total_payments": 2145500.00,
+    "total_lobbyists": 45,
+    "total_clients": 234,
+    "total_associations": 25,
+    "avg_payment": 47678.89,
+    "top_categories": {
+      "Real Estate & Housing": 375000.00,
+      "Manufacturing": 325500.00,
+      "Transportation": 276000.00,
+      "Energy & Environment": 267200.00,
+      "Healthcare": 203500.00
+    },
+    "growth_rate": 8.5,
+    "previous_quarter_total": 1975000.00,
+    "legislative_focus": [
+      "Housing Crisis Response",
+      "Climate Change Mitigation",
+      "Healthcare Access",
+      "Transportation Infrastructure",
+      "Technology Regulation"
+    ]
+  },
+  {
+    "quarter": "Q2 2024",
+    "year": 2024,
+    "total_payments": 2475000.00,
+    "total_lobbyists": 42,
+    "total_clients": 221,
+    "total_associations": 24,
+    "avg_payment": 58928.57,
+    "top_categories": {
+      "Real Estate & Housing": 401000.00,
+      "Energy & Environment": 298000.00,
+      "Manufacturing": 289000.00,
+      "Transportation": 234000.00,
+      "Education": 198000.00
+    },
+    "growth_rate": 12.3,
+    "previous_quarter_total": 2203500.00,
+    "legislative_focus": [
+      "Budget Allocations",
+      "Infrastructure Investment",
+      "Education Funding",
+      "Environmental Standards",
+      "Economic Recovery"
+    ]
+  },
+  {
+    "quarter": "Q1 2024",
+    "year": 2024,
+    "total_payments": 2203500.00,
+    "total_lobbyists": 39,
+    "total_clients": 198,
+    "total_associations": 22,
+    "avg_payment": 56498.72,
+    "top_categories": {
+      "Real Estate & Housing": 356000.00,
+      "Transportation": 298500.00,
+      "Agriculture": 298500.00,
+      "Manufacturing": 267000.00,
+      "Energy & Environment": 234500.00
+    },
+    "growth_rate": 15.7,
+    "previous_quarter_total": 1904000.00,
+    "legislative_focus": [
+      "New Session Priorities",
+      "Housing Policy Reform",
+      "Agricultural Water Rights",
+      "Clean Energy Transition",
+      "Economic Development"
+    ]
+  },
+  {
+    "quarter": "Q4 2023",
+    "year": 2023,
+    "total_payments": 1904000.00,
+    "total_lobbyists": 36,
+    "total_clients": 187,
+    "total_associations": 21,
+    "avg_payment": 52888.89,
+    "top_categories": {
+      "Healthcare": 298000.00,
+      "Energy & Environment": 267000.00,
+      "Manufacturing": 234500.00,
+      "Technology & Innovation": 203000.00,
+      "Financial Services": 187500.00
+    },
+    "growth_rate": 6.2,
+    "previous_quarter_total": 1793000.00,
+    "legislative_focus": [
+      "Year-end Budget Items",
+      "Healthcare Reform",
+      "Climate Legislation",
+      "Technology Oversight",
+      "Financial Regulation"
+    ]
+  },
+  {
+    "quarter": "Q3 2023",
+    "year": 2023,
+    "total_payments": 1793000.00,
+    "total_lobbyists": 34,
+    "total_clients": 176,
+    "total_associations": 20,
+    "avg_payment": 52735.29,
+    "top_categories": {
+      "Energy & Environment": 287500.00,
+      "Healthcare": 234000.00,
+      "Real Estate & Housing": 223500.00,
+      "Technology & Innovation": 198000.00,
+      "Education": 176500.00
+    },
+    "growth_rate": 4.8,
+    "previous_quarter_total": 1710500.00,
+    "legislative_focus": [
+      "Climate Action Plans",
+      "Housing Development",
+      "Healthcare Expansion",
+      "Educational Technology",
+      "Innovation Policy"
+    ]
+  },
+  {
+    "quarter": "Q2 2023",
+    "year": 2023,
+    "total_payments": 1710500.00,
+    "total_lobbyists": 32,
+    "total_clients": 165,
+    "total_associations": 19,
+    "avg_payment": 53453.13,
+    "top_categories": {
+      "Healthcare": 267000.00,
+      "Energy & Environment": 245000.00,
+      "Transportation": 223500.00,
+      "Agriculture": 198000.00,
+      "Technology & Innovation": 187500.00
+    },
+    "growth_rate": 9.4,
+    "previous_quarter_total": 1563000.00,
+    "legislative_focus": [
+      "Mid-session Negotiations",
+      "Healthcare Policy",
+      "Clean Energy Goals",
+      "Transportation Investment",
+      "Agricultural Support"
+    ]
+  },
+  {
+    "quarter": "Q1 2023",
+    "year": 2023,
+    "total_payments": 1563000.00,
+    "total_lobbyists": 29,
+    "total_clients": 154,
+    "total_associations": 18,
+    "avg_payment": 53896.55,
+    "top_categories": {
+      "Real Estate & Housing": 234500.00,
+      "Healthcare": 212000.00,
+      "Energy & Environment": 198750.00,
+      "Manufacturing": 187500.00,
+      "Financial Services": 156250.00
+    },
+    "growth_rate": 13.2,
+    "previous_quarter_total": 1380000.00,
+    "legislative_focus": [
+      "Session Startup",
+      "Housing Crisis Response",
+      "Healthcare Access",
+      "Environmental Standards",
+      "Economic Recovery"
+    ]
+  },
+  {
+    "quarter": "Q4 2022",
+    "year": 2022,
+    "total_payments": 1380000.00,
+    "total_lobbyists": 27,
+    "total_clients": 142,
+    "total_associations": 17,
+    "avg_payment": 51111.11,
+    "top_categories": {
+      "Healthcare": 198500.00,
+      "Technology & Innovation": 187000.00,
+      "Energy & Environment": 167500.00,
+      "Real Estate & Housing": 156000.00,
+      "Financial Services": 145250.00
+    },
+    "growth_rate": 7.8,
+    "previous_quarter_total": 1280000.00,
+    "legislative_focus": [
+      "End of Session",
+      "Budget Finalization",
+      "Healthcare Policy",
+      "Tech Regulation",
+      "Climate Initiatives"
+    ]
+  }
+]

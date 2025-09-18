@@ -1,0 +1,178 @@
+{
+  "overview": {
+    "last_updated": "2024-09-18T14:30:00Z",
+    "current_quarter": "Q3 2024",
+    "total_active_lobbyists": 45,
+    "total_active_clients": 234,
+    "total_associations": 25,
+    "total_payments_ytd": 6824000.00,
+    "average_payment_amount": 53698.12,
+    "growth_rate_yoy": 18.5
+  },
+  "recent_activity": [
+    {
+      "date": "2024-09-18",
+      "type": "payment",
+      "description": "Large healthcare advocacy payment recorded",
+      "amount": 125000.00,
+      "client": "Universal Healthcare Network",
+      "status": "processed"
+    },
+    {
+      "date": "2024-09-17",
+      "type": "registration",
+      "description": "New lobbyist registration approved",
+      "lobbyist": "Maria Gonzalez",
+      "specialization": "Environmental Policy",
+      "status": "active"
+    },
+    {
+      "date": "2024-09-16",
+      "type": "legislative",
+      "description": "SB 1001 - AI Ethics Standards bill updated",
+      "bill_id": "SB 1001",
+      "status": "committee_review",
+      "affected_clients": 12
+    },
+    {
+      "date": "2024-09-15",
+      "type": "compliance",
+      "description": "Quarterly filing deadline reminder sent",
+      "recipients": 45,
+      "deadline": "2024-09-30",
+      "status": "sent"
+    },
+    {
+      "date": "2024-09-14",
+      "type": "payment",
+      "description": "Technology sector lobbying payment",
+      "amount": 89500.00,
+      "client": "Silicon Valley Innovation Group",
+      "status": "processed"
+    }
+  ],
+  "top_categories_current_quarter": [
+    {
+      "category": "Real Estate & Housing",
+      "total_amount": 375000.00,
+      "percentage": 17.5,
+      "change_from_previous": 8.2,
+      "active_clients": 23,
+      "top_issues": ["Affordable Housing", "Zoning Reform", "Property Tax"]
+    },
+    {
+      "category": "Manufacturing",
+      "total_amount": 325500.00,
+      "percentage": 15.2,
+      "change_from_previous": 12.6,
+      "active_clients": 18,
+      "top_issues": ["Trade Policy", "Environmental Compliance", "Workforce Development"]
+    },
+    {
+      "category": "Transportation",
+      "total_amount": 276000.00,
+      "percentage": 12.9,
+      "change_from_previous": -5.1,
+      "active_clients": 15,
+      "top_issues": ["Public Transit", "Infrastructure Funding", "Electric Vehicles"]
+    },
+    {
+      "category": "Energy & Environment",
+      "total_amount": 267200.00,
+      "percentage": 12.5,
+      "change_from_previous": 3.8,
+      "active_clients": 28,
+      "top_issues": ["Clean Energy", "Climate Action", "Grid Modernization"]
+    },
+    {
+      "category": "Healthcare",
+      "total_amount": 203500.00,
+      "percentage": 9.5,
+      "change_from_previous": -15.2,
+      "active_clients": 19,
+      "top_issues": ["Medicare Expansion", "Healthcare Access", "Drug Pricing"]
+    }
+  ],
+  "geographic_distribution": [
+    {
+      "county": "Los Angeles",
+      "total_amount": 487500.00,
+      "percentage": 22.7,
+      "active_entities": 45,
+      "primary_sectors": ["Healthcare", "Transportation", "Entertainment"]
+    },
+    {
+      "county": "San Francisco",
+      "total_amount": 321000.00,
+      "percentage": 15.0,
+      "active_entities": 28,
+      "primary_sectors": ["Technology", "Financial Services", "Real Estate"]
+    },
+    {
+      "county": "Orange",
+      "total_amount": 267500.00,
+      "percentage": 12.5,
+      "active_entities": 22,
+      "primary_sectors": ["Real Estate", "Manufacturing", "Healthcare"]
+    },
+    {
+      "county": "Santa Clara",
+      "total_amount": 234500.00,
+      "percentage": 10.9,
+      "active_entities": 19,
+      "primary_sectors": ["Technology", "Energy", "Transportation"]
+    },
+    {
+      "county": "Sacramento",
+      "total_amount": 198000.00,
+      "percentage": 9.2,
+      "active_entities": 15,
+      "primary_sectors": ["Energy", "Agriculture", "Government"]
+    }
+  ],
+  "compliance_metrics": {
+    "filing_compliance_rate": 96.8,
+    "on_time_filings": 43,
+    "late_filings": 2,
+    "pending_filings": 0,
+    "compliance_issues": 1,
+    "next_deadline": "2024-09-30",
+    "days_until_deadline": 12
+  },
+  "system_health": {
+    "api_uptime": "99.9%",
+    "data_freshness": "Real-time",
+    "last_data_sync": "2024-09-18T14:28:45Z",
+    "processing_status": "Normal",
+    "active_users_today": 23,
+    "peak_concurrent_users": 8
+  },
+  "alerts": [
+    {
+      "id": "AL001",
+      "type": "deadline_warning",
+      "severity": "medium",
+      "message": "Q3 2024 filing deadline approaching (12 days remaining)",
+      "affected_entities": 45,
+      "created_date": "2024-09-18",
+      "status": "active"
+    },
+    {
+      "id": "AL002",
+      "type": "compliance_issue",
+      "severity": "low",
+      "message": "1 entity has incomplete filing documentation",
+      "affected_entities": 1,
+      "entity_name": "Tech Forward Solutions",
+      "created_date": "2024-09-17",
+      "status": "under_review"
+    }
+  ],
+  "performance_indicators": {
+    "data_processing_time": "1.2s average",
+    "report_generation_time": "3.4s average",
+    "user_satisfaction_score": 4.6,
+    "system_reliability": "99.7%",
+    "data_accuracy_rate": "99.9%"
+  }
+}

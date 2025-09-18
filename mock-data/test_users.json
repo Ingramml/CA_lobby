@@ -1,0 +1,174 @@
+[
+  {
+    "id": "user_admin_001",
+    "email": "admin@calobby-demo.gov",
+    "first_name": "Sarah",
+    "last_name": "Martinez",
+    "role": "admin",
+    "permissions": [
+      "data.view", "data.edit", "data.delete", "data.upload", "data.download",
+      "reports.view", "reports.create", "reports.edit", "reports.delete",
+      "users.view", "users.create", "users.edit", "users.delete",
+      "analytics.view", "system.admin", "audit.view"
+    ],
+    "department": "Government Affairs",
+    "title": "Director of Lobbying Oversight",
+    "created_date": "2024-01-15",
+    "last_active": "2024-09-18T14:30:00Z",
+    "login_count": 342,
+    "preferences": {
+      "dashboard_layout": "comprehensive",
+      "default_date_range": "current_quarter",
+      "email_notifications": true,
+      "data_export_format": "excel"
+    },
+    "bio": "Experienced government affairs professional with 15+ years managing lobbying disclosure and compliance programs."
+  },
+  {
+    "id": "user_analyst_002",
+    "email": "analyst@calobby-demo.gov",
+    "first_name": "Michael",
+    "last_name": "Chen",
+    "role": "analyst",
+    "permissions": [
+      "data.view", "data.edit", "data.download",
+      "reports.view", "reports.create", "reports.edit",
+      "analytics.view"
+    ],
+    "department": "Policy Analysis",
+    "title": "Senior Policy Analyst",
+    "created_date": "2024-02-22",
+    "last_active": "2024-09-18T13:45:00Z",
+    "login_count": 187,
+    "preferences": {
+      "dashboard_layout": "analytics_focused",
+      "default_date_range": "last_12_months",
+      "email_notifications": true,
+      "data_export_format": "csv"
+    },
+    "specializations": [
+      "Healthcare Policy",
+      "Environmental Regulation",
+      "Statistical Analysis"
+    ],
+    "bio": "Policy analyst specializing in healthcare and environmental lobbying trends with expertise in statistical modeling."
+  },
+  {
+    "id": "user_datamgr_003",
+    "email": "datamanager@calobby-demo.gov",
+    "first_name": "Jennifer",
+    "last_name": "Rodriguez",
+    "role": "data_manager",
+    "permissions": [
+      "data.view", "data.edit", "data.upload", "data.download",
+      "data.transform", "data.analyze",
+      "reports.view", "reports.create"
+    ],
+    "department": "Information Management",
+    "title": "Data Operations Manager",
+    "created_date": "2024-03-10",
+    "last_active": "2024-09-18T11:20:00Z",
+    "login_count": 298,
+    "preferences": {
+      "dashboard_layout": "data_management",
+      "default_date_range": "current_month",
+      "email_notifications": false,
+      "data_export_format": "json"
+    },
+    "technical_skills": [
+      "Data Processing",
+      "BigQuery Management",
+      "ETL Pipelines",
+      "Data Quality Assurance"
+    ],
+    "bio": "Technical data manager responsible for maintaining data integrity and processing lobbying disclosure submissions."
+  },
+  {
+    "id": "user_viewer_004",
+    "email": "viewer@calobby-demo.gov",
+    "first_name": "David",
+    "last_name": "Johnson",
+    "role": "viewer",
+    "permissions": [
+      "data.view",
+      "reports.view",
+      "dashboard.view"
+    ],
+    "department": "Public Information",
+    "title": "Public Information Coordinator",
+    "created_date": "2024-04-05",
+    "last_active": "2024-09-17T16:30:00Z",
+    "login_count": 95,
+    "preferences": {
+      "dashboard_layout": "summary",
+      "default_date_range": "current_quarter",
+      "email_notifications": true,
+      "data_export_format": "pdf"
+    },
+    "responsibilities": [
+      "Public Records Requests",
+      "Transparency Reporting",
+      "Stakeholder Communications"
+    ],
+    "bio": "Coordinates public access to lobbying information and manages transparency reporting initiatives."
+  },
+  {
+    "id": "user_analyst_005",
+    "email": "legalanalyst@calobby-demo.gov",
+    "first_name": "Lisa",
+    "last_name": "Thompson",
+    "role": "analyst",
+    "permissions": [
+      "data.view", "data.download",
+      "reports.view", "reports.create",
+      "analytics.view"
+    ],
+    "department": "Legal Compliance",
+    "title": "Compliance Analyst",
+    "created_date": "2024-05-12",
+    "last_active": "2024-09-18T09:15:00Z",
+    "login_count": 143,
+    "preferences": {
+      "dashboard_layout": "compliance_focused",
+      "default_date_range": "current_quarter",
+      "email_notifications": true,
+      "data_export_format": "excel"
+    },
+    "specializations": [
+      "Legal Compliance",
+      "Filing Requirements",
+      "Regulatory Analysis"
+    ],
+    "bio": "Legal analyst focused on ensuring lobbying disclosure compliance and identifying potential violations."
+  },
+  {
+    "id": "user_datamgr_006",
+    "email": "techmanager@calobby-demo.gov",
+    "first_name": "Robert",
+    "last_name": "Kim",
+    "role": "data_manager",
+    "permissions": [
+      "data.view", "data.edit", "data.upload", "data.download",
+      "data.transform", "data.analyze",
+      "reports.view", "system.monitor"
+    ],
+    "department": "IT Operations",
+    "title": "Technical Systems Manager",
+    "created_date": "2024-06-20",
+    "last_active": "2024-09-18T12:45:00Z",
+    "login_count": 156,
+    "preferences": {
+      "dashboard_layout": "technical",
+      "default_date_range": "last_30_days",
+      "email_notifications": false,
+      "data_export_format": "json"
+    },
+    "technical_expertise": [
+      "System Administration",
+      "Database Management",
+      "API Development",
+      "Performance Monitoring"
+    ],
+    "bio": "Technical systems manager responsible for platform operations, data processing, and system performance."
+  }
+]
