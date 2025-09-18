@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "webapp/frontend/package.json",
@@ -14,58 +15,20 @@
   ],
   "routes": [
     {
-      "src": "^/manifest\\.json$",
-      "dest": "/webapp/frontend/build/manifest.json",
-      "headers": {
-        "Cache-Control": "public, max-age=86400",
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/manifest+json"
-      }
-    },
-    {
-      "src": "^/favicon\\.ico$",
-      "dest": "/webapp/frontend/build/favicon.ico",
-      "headers": {
-        "Cache-Control": "public, max-age=86400",
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "image/x-icon"
-      }
-    },
-    {
-      "src": "^/robots\\.txt$",
-      "dest": "/webapp/frontend/build/robots.txt",
-      "headers": {
-        "Cache-Control": "public, max-age=86400",
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "text/plain"
-      }
-    },
-    {
       "src": "/api/(.*)",
       "dest": "/webapp/backend/app.py"
     },
     {
-      "src": "^/static/(.*)$",
-      "dest": "/webapp/frontend/build/static/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable",
-        "Access-Control-Allow-Origin": "*"
-      }
+      "src": "/static/(.*)",
+      "dest": "/webapp/frontend/build/static/$1"
     },
     {
-      "src": "^/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))$",
-      "dest": "/webapp/frontend/build/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable",
-        "Access-Control-Allow-Origin": "*"
-      }
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|json))",
+      "dest": "/webapp/frontend/build/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/webapp/frontend/build/index.html",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      }
+      "dest": "/webapp/frontend/build/index.html"
     }
   ],
   "env": {
