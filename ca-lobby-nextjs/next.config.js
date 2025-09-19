@@ -19,7 +19,7 @@ const nextConfig = {
       '@/types': path.resolve(appPath, 'types'),
     };
 
-    // Original webpack config
+    // Client-side fallbacks
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -50,26 +50,6 @@ const nextConfig = {
     GOOGLE_CLOUD_PROJECT_ID: process.env.GOOGLE_CLOUD_PROJECT_ID,
     GOOGLE_CLOUD_KEY_FILE: process.env.GOOGLE_CLOUD_KEY_FILE,
     BIGQUERY_DATASET: process.env.BIGQUERY_DATASET,
-  },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-        crypto: false,
-        stream: false,
-        url: false,
-        zlib: false,
-        http: false,
-        https: false,
-        assert: false,
-        os: false,
-        path: false,
-      };
-    }
-    return config;
   },
   images: {
     domains: ['images.unsplash.com', 'via.placeholder.com'],

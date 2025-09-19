@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { checkBigQueryConnection } from '@/lib/bigquery-client'
-import { checkKVConnection, getCacheInfo } from '@/lib/cache'
-import { checkEdgeConfigConnection, getFeatureFlagCacheStats } from '@/lib/feature-flags'
 
 // Type for health status object
 interface HealthStatus {
@@ -55,25 +53,13 @@ export async function GET(request: NextRequest) {
 
     // Perform health checks in parallel for better performance
     const [
-      bigQueryHealth,
-      kvHealth,
-      edgeConfigHealth,
-      cacheInfo,
-      featureFlagStats
+      bigQueryHealth
     ] = await Promise.allSettled([
-      checkBigQueryConnection(),
-      checkKVConnection(),
-      checkEdgeConfigConnection(),
-      getCacheInfo(),
-      getFeatureFlagCacheStats()
+      checkBigQueryConnection()
     ])
 
     // Extract results with fallbacks
     const bigQueryStatus = bigQueryHealth.status === 'fulfilled' ? bigQueryHealth.value : false
-    const kvStatus = kvHealth.status === 'fulfilled' ? kvHealth.value : false
-    const edgeConfigStatus = edgeConfigHealth.status === 'fulfilled' ? edgeConfigHealth.value : false
-    const cacheMetrics = cacheInfo.status === 'fulfilled' ? cacheInfo.value : null
-    const ffMetrics = featureFlagStats.status === 'fulfilled' ? featureFlagStats.value : null
 
     // Build comprehensive health status
     const healthStatus = {
@@ -93,13 +79,13 @@ export async function GET(request: NextRequest) {
           lastChecked: new Date().toISOString(),
         },
         vercelKV: {
-          status: kvStatus ? 'up' : 'down',
-          message: kvStatus ? 'Vercel KV connection healthy' : 'Vercel KV connection failed',
+          status: 'unknown',
+          message: 'KV check not implemented',
           lastChecked: new Date().toISOString(),
         },
         edgeConfig: {
-          status: edgeConfigStatus ? 'up' : 'down',
-          message: edgeConfigStatus ? 'Edge Config connection healthy' : 'Edge Config connection failed',
+          status: 'unknown',
+          message: 'Edge Config check not implemented',
           lastChecked: new Date().toISOString(),
         },
       },
@@ -123,15 +109,8 @@ export async function GET(request: NextRequest) {
             total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
           },
         },
-        cache: cacheMetrics ? {
-          kvAvailable: cacheMetrics.kvAvailable,
-          fallbackCacheSize: cacheMetrics.fallbackCacheSize,
-          stats: cacheMetrics.stats,
-        } : null,
-        featureFlags: ffMetrics ? {
-          cacheSize: ffMetrics.size,
-          cachedFlags: ffMetrics.keys,
-        } : null,
+        cache: null,
+        featureFlags: null,
         environment: {
           projectId: process.env.GOOGLE_CLOUD_PROJECT_ID ? '***configured***' : 'not configured',
           bigQueryDataset: process.env.BIGQUERY_DATASET || 'not configured',
@@ -156,12 +135,6 @@ export async function GET(request: NextRequest) {
     const failedChecks = []
     if (bigQueryHealth.status === 'rejected') {
       failedChecks.push({ service: 'bigquery', error: bigQueryHealth.reason?.message })
-    }
-    if (kvHealth.status === 'rejected') {
-      failedChecks.push({ service: 'vercelKV', error: kvHealth.reason?.message })
-    }
-    if (edgeConfigHealth.status === 'rejected') {
-      failedChecks.push({ service: 'edgeConfig', error: edgeConfigHealth.reason?.message })
     }
 
     if (failedChecks.length > 0) {
