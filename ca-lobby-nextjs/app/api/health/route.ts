@@ -3,6 +3,47 @@ import { checkBigQueryConnection } from '@/lib/bigquery-client'
 import { checkKVConnection, getCacheInfo } from '@/lib/cache'
 import { checkEdgeConfigConnection, getFeatureFlagCacheStats } from '@/lib/feature-flags'
 
+// Type for health status object
+interface HealthStatus {
+  status: string
+  timestamp: string
+  responseTime: number
+  services: {
+    api: {
+      status: string
+      message: string
+      uptime: number
+      pid: number
+    }
+    bigquery: {
+      status: string
+      message: string
+      lastChecked: string
+    }
+    vercelKV: {
+      status: string
+      message: string
+      lastChecked: string
+    }
+    edgeConfig: {
+      status: string
+      message: string
+      lastChecked: string
+    }
+  }
+  environment: {
+    nodeEnv?: string
+    platform: string
+    nodeVersion: string
+    nextVersion: string
+    region: string
+    deployment: string
+  }
+  errors?: Array<{ service: string; error?: string }>
+  details?: any
+  metrics?: any
+}
+
 export async function GET(request: NextRequest) {
   const startTime = Date.now()
 
@@ -124,7 +165,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (failedChecks.length > 0) {
-      healthStatus.errors = failedChecks
+      (healthStatus as any).errors = failedChecks
     }
 
     // Determine overall status

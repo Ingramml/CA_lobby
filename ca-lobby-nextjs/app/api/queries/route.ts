@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
     if (operation === 'by-tag' && tag) {
       // Filter queries by tag
       const filteredQueries = Object.entries(AVAILABLE_QUERIES)
-        .filter(([key, query]) => query.tags.includes(tag))
+        .filter(([key, query]) => query.tags.includes(tag as any))
         .reduce((acc, [key, query]) => ({ ...acc, [key]: query }), {})
 
       return NextResponse.json({
@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
         availableTags: Array.from(allTags).sort(),
         tagCounts: Array.from(allTags).map(tag => ({
           tag,
-          queryCount: Object.values(AVAILABLE_QUERIES).filter(q => q.tags.includes(tag)).length
+          queryCount: Object.values(AVAILABLE_QUERIES).filter(q => q.tags.includes(tag as any)).length
         }))
       })
     }
