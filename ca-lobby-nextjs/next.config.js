@@ -6,6 +6,39 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Handle path aliases for both local and Vercel deployment
+    const path = require('path');
+    const appPath = path.resolve(__dirname, './app');
+
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': appPath,
+      '@/components': path.resolve(appPath, 'components'),
+      '@/lib': path.resolve(appPath, 'lib'),
+      '@/types': path.resolve(appPath, 'types'),
+    };
+
+    // Original webpack config
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: false,
+        stream: false,
+        url: false,
+        zlib: false,
+        http: false,
+        https: false,
+        assert: false,
+        os: false,
+        path: false,
+      };
+    }
+    return config;
+  },
   experimental: {
     serverComponentsExternalPackages: ['@google-cloud/bigquery'],
     outputFileTracingIncludes: {
