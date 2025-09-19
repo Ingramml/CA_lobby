@@ -1,8 +1,7 @@
 {
-  "buildCommand": "cd ca-lobby-nextjs && npm run build",
-  "devCommand": "cd ca-lobby-nextjs && npm run dev",
-  "installCommand": "cd ca-lobby-nextjs && npm install",
-  "framework": "nextjs",
-  "outputDirectory": "ca-lobby-nextjs/.next",
-  "public": false
+  "functions": {
+    "ca-lobby-nextjs/app/api/**/*.js": {
+      "maxDuration": 30
+    }
+  }
 }

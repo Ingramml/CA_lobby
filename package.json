@@ -1,0 +1,13 @@
+{
+  "name": "ca-lobby-workspace",
+  "private": true,
+  "scripts": {
+    "build": "cd ca-lobby-nextjs && npm run build",
+    "dev": "cd ca-lobby-nextjs && npm run dev",
+    "start": "cd ca-lobby-nextjs && npm run start",
+    "install-deps": "cd ca-lobby-nextjs && npm install"
+  },
+  "workspaces": [
+    "ca-lobby-nextjs"
+  ]
+}
