@@ -432,7 +432,7 @@ async function performBasicStats(data: any[], sampleSize: number): Promise<any> 
     const values = sample.map(row => row[column]).filter(val => val !== null && val !== undefined)
     const nullCount = sample.length - values.length
 
-    let stats: any = {
+    const stats: any = {
       totalValues: sample.length,
       nonNullValues: values.length,
       nullValues: nullCount,

@@ -57,7 +57,7 @@ export function PerformanceMonitor() {
   useEffect(() => {
     if (!isEnabled || typeof window === 'undefined') return;
 
-    let performanceObservers: PerformanceObserver[] = [];
+    const performanceObservers: PerformanceObserver[] = [];
 
     // Initialize performance monitoring
     const initPerformanceMonitoring = () => {
