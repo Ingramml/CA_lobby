@@ -1,10 +1,6 @@
-import { Metadata } from 'next'
-import Link from 'next/link'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Dashboard | CA Lobby',
-  description: 'California Lobbying Data Dashboard',
-}
+import Link from 'next/link'
 
 // Mock data for the dashboard
 const recentActivities = [
