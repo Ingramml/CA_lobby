@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { uploadToBigQuery } from '@/lib/bigquery-client'
-
-export const dynamic = 'force-dynamic'
-import { withPermissions, createApiResponse, withAuditLog, combineMiddleware } from '../../../../lib/api-auth'
-import { PERMISSIONS } from '../../../../lib/auth'
+import { auth } from '@clerk/nextjs'
 import { csvToJson } from '@/lib/utils'
 
-async function handleUpload(request: NextRequest) {
+export const dynamic = 'force-dynamic'
+
+export async function POST(request: NextRequest) {
   try {
+    // Check authentication
+    const { userId } = auth()
+    if (!userId) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
 
     const formData = await request.formData()
     const file = formData.get('file') as File
@@ -16,22 +20,16 @@ async function handleUpload(request: NextRequest) {
 
     // Validate required fields
     if (!file) {
-      return createApiResponse(
-        false,
-        null,
-        'File is required',
-        'Please provide a file to upload',
-        400
+      return NextResponse.json(
+        { success: false, error: 'File is required' },
+        { status: 400 }
       )
     }
 
     if (!tableName) {
-      return createApiResponse(
-        false,
-        null,
-        'Table name is required',
-        'Please provide a table name',
-        400
+      return NextResponse.json(
+        { success: false, error: 'Table name is required' },
+        { status: 400 }
       )
     }
 
@@ -138,28 +136,21 @@ async function handleUpload(request: NextRequest) {
 
   } catch (error) {
     console.error('Upload API error:', error)
-    return createApiResponse(
-      false,
-      null,
-      'Upload failed',
-      'An error occurred while uploading data to BigQuery',
-      500
+    return NextResponse.json(
+      { success: false, error: 'Upload failed: An error occurred while uploading data to BigQuery' },
+      { status: 500 }
     )
   }
 }
 
-// Apply authentication and permission checking
-const protectedUpload = combineMiddleware(
-  withPermissions([PERMISSIONS.UPLOAD_DATA]),
-  withAuditLog
-)
-
-export const POST = protectedUpload(handleUpload)
-
 // GET method to check upload status or list recent uploads
 export async function GET(request: NextRequest) {
   try {
-    await requirePermission('bigquery:read')
+    // Check authentication
+    const { userId } = auth()
+    if (!userId) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
 
     const { searchParams } = new URL(request.url)
     const operation = searchParams.get('operation')
