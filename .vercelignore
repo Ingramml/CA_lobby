@@ -1,0 +1,23 @@
+# Ignore large directories and files that aren't needed for deployment
+webapp/frontend/node_modules
+node_modules
+.venv
+__pycache__
+*.pyc
+.DS_Store
+.git
+.github
+Documentation/
+Sesison_Archives/
+Session_Archives/
+*.md
+*.pdf
+.claude
+SQL Queries/
+Downloaded_files/
+
+# Only include essential files for deployment:
+# - webapp/frontend/build/ (React build artifacts)
+# - webapp/backend/ (Flask app and requirements)
+# - vercel.json (deployment config)
+# - package.json (project metadata)

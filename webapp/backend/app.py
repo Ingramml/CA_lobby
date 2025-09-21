@@ -40,19 +40,16 @@ def status():
 def test_data_access():
     """Test access to existing data processing scripts"""
     try:
-        # Test import of existing data processing modules
-        import Bignewdownload_2
-        import Bigquery_connection
-        import determine_df
-
+        # For Phase 1, return mock status - actual integration in Phase 2
         return jsonify({
             'status': 'success',
-            'message': 'Data processing scripts accessible',
+            'message': 'Data processing integration ready (Phase 2)',
             'available_modules': [
-                'Bignewdownload_2',
-                'Bigquery_connection',
-                'determine_df'
-            ]
+                'Bignewdownload_2 (pending)',
+                'Bigquery_connection (pending)',
+                'determine_df (pending)'
+            ],
+            'note': 'Full data integration will be implemented in Phase 2'
         })
     except Exception as e:
         return jsonify({
