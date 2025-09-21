@@ -2,6 +2,8 @@ import { authMiddleware } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+export const runtime = 'nodejs'
+
 // Check if we should disable authentication (only in specific test environments)
 const shouldDisableAuth = process.env.DISABLE_CLERK_AUTH === 'true' && process.env.NODE_ENV === 'test'
 

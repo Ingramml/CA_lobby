@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { checkBigQueryConnection } from '@/lib/bigquery-client'
 
+export const dynamic = 'force-dynamic'
+
 // Type for health status object
 interface HealthStatus {
   status: string

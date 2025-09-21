@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { uploadToBigQuery } from '@/lib/bigquery-client'
+
+export const dynamic = 'force-dynamic'
 import { withPermissions, createApiResponse, withAuditLog, combineMiddleware } from '../../../../lib/api-auth'
 import { PERMISSIONS } from '../../../../lib/auth'
 import { csvToJson } from '@/lib/utils'
