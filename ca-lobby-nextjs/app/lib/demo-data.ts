@@ -4,11 +4,11 @@
  * Now using comprehensive mock data from the mock-data folder
  */
 
-import lobbyingPayments from '../../../../mock-data/lobbying_payments.json'
-import lobbyAssociations from '../../../../mock-data/lobby_associations.json'
-import quarterlyTrends from '../../../../mock-data/quarterly_trends.json'
-import dashboardSummary from '../../../../mock-data/dashboard_summary.json'
-import testUsers from '../../../../mock-data/test_users.json'
+import lobbyingPayments from '../../mock-data/lobbying_payments.json'
+import lobbyAssociations from '../../mock-data/lobby_associations.json'
+import quarterlyTrends from '../../mock-data/quarterly_trends.json'
+import dashboardSummary from '../../mock-data/dashboard_summary.json'
+import testUsers from '../../mock-data/test_users.json'
 
 export const mockData = {
   lobbyingPayments,
