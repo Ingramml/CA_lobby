@@ -1,5 +1,5 @@
 {
-  "name": "ca-lobby",
+  "name": "ca-lobby-webapp",
   "version": "1.0.0",
   "description": "California Lobbying Transparency Webapp",
   "scripts": {
@@ -7,7 +7,7 @@
     "start": "python webapp/backend/app.py"
   },
   "engines": {
-    "node": "18.x",
+    "node": "22.x",
     "python": "3.11.x"
   }
 }
