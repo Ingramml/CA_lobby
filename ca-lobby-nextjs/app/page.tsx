@@ -2,11 +2,9 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { useUser } from '@clerk/nextjs'
+import { useAuth, UserButton } from '@clerk/nextjs'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { AuthButtons } from '@/components/auth/SignInButton'
-import { UserProfile } from '@/components/auth/UserProfile'
 import {
   DatabaseIcon,
   BarChart3Icon,
@@ -63,7 +61,7 @@ const roleFeatures = {
     'Data visualization and charts',
     'Export capabilities',
   ],
-  data_manager: [
+  'data manager': [
     'Data upload and transformation',
     'File management and processing',
     'Data quality monitoring',
@@ -78,117 +76,20 @@ const roleFeatures = {
 }
 
 export default function HomePage() {
-  const { isSignedIn, isLoaded, user } = useUser()
+  const { isSignedIn, isLoaded } = useAuth()
 
+  // Show loading state while auth is loading
   if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
+          <DatabaseIcon className="h-12 w-12 animate-pulse mx-auto mb-4 text-blue-600" />
+          <p className="text-muted-foreground">Loading CA Lobby Dashboard...</p>
         </div>
       </div>
     )
   }
 
-  if (isSignedIn) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Welcome back to CA Lobby
-            </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Continue your analysis of California lobbying data
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {/* User Profile */}
-            <div className="lg:col-span-1">
-              <UserProfile showPermissions showMetadata />
-            </div>
-
-            {/* Quick Actions */}
-            <div className="lg:col-span-2 space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                  <CardDescription>
-                    Jump to your most frequently used features
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="grid sm:grid-cols-2 gap-4">
-                  <Button asChild className="h-auto p-4 flex-col items-start">
-                    <Link href="/dashboard">
-                      <BarChart3Icon className="h-6 w-6 mb-2" />
-                      <span className="font-medium">View Dashboard</span>
-                      <span className="text-xs text-muted-foreground">
-                        Access your main analytics dashboard
-                      </span>
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" className="h-auto p-4 flex-col items-start">
-                    <Link href="/lobbying-data">
-                      <DatabaseIcon className="h-6 w-6 mb-2" />
-                      <span className="font-medium">Browse Data</span>
-                      <span className="text-xs text-muted-foreground">
-                        Search and explore lobbying records
-                      </span>
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" className="h-auto p-4 flex-col items-start">
-                    <Link href="/reports">
-                      <TrendingUpIcon className="h-6 w-6 mb-2" />
-                      <span className="font-medium">View Reports</span>
-                      <span className="text-xs text-muted-foreground">
-                        Access generated reports and insights
-                      </span>
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" className="h-auto p-4 flex-col items-start">
-                    <Link href="/data/analyze">
-                      <UsersIcon className="h-6 w-6 mb-2" />
-                      <span className="font-medium">Data Analysis</span>
-                      <span className="text-xs text-muted-foreground">
-                        Perform custom data analysis
-                      </span>
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Role-based Features */}
-              {user && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Your Access Level</CardTitle>
-                    <CardDescription>
-                      Features available to your role
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      {roleFeatures[user.publicMetadata?.role as keyof typeof roleFeatures]?.map((feature, index) => (
-                        <div key={index} className="flex items-center space-x-2">
-                          <CheckCircleIcon className="h-4 w-4 text-green-600" />
-                          <span className="text-sm">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Landing page for non-authenticated users
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -198,7 +99,30 @@ export default function HomePage() {
             <DatabaseIcon className="h-8 w-8 text-blue-600" />
             <span className="text-xl font-bold">CA Lobby</span>
           </div>
-          <AuthButtons />
+          <div className="flex flex-col sm:flex-row gap-2 items-center">
+            {isSignedIn ? (
+              <>
+                <span className="text-sm text-muted-foreground hidden sm:block">Welcome back!</span>
+                <UserButton
+                  appearance={{
+                    elements: {
+                      avatarBox: "h-8 w-8",
+                    },
+                  }}
+                  afterSignOutUrl="/"
+                />
+              </>
+            ) : (
+              <>
+                <Button asChild variant="outline">
+                  <Link href="/sign-in">Sign In</Link>
+                </Button>
+                <Button asChild>
+                  <Link href="/sign-up">Get Started</Link>
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </header>
 
@@ -214,7 +138,20 @@ export default function HomePage() {
             analytics platform. Promote transparency and make informed decisions.
           </p>
           <div className="space-x-4">
-            <AuthButtons />
+            {isSignedIn ? (
+              <Button asChild size="lg">
+                <Link href="/lobbying-data">Explore Data</Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild size="lg">
+                  <Link href="/sign-up">Get Started</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/sign-in">Sign In</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -291,7 +228,22 @@ export default function HomePage() {
             Join thousands of researchers, journalists, and citizens who rely on our platform
             for California lobbying insights.
           </p>
-          <AuthButtons />
+          <div className="flex flex-col sm:flex-row gap-2 justify-center">
+            {isSignedIn ? (
+              <Button asChild variant="secondary" size="lg">
+                <Link href="/lobbying-data">Explore Dashboard</Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild variant="secondary" size="lg">
+                  <Link href="/sign-up">Get Started Today</Link>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                  <Link href="/sign-in">Sign In</Link>
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </section>
 

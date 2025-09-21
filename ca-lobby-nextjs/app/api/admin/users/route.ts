@@ -1,113 +1,118 @@
-import { NextRequest } from 'next/server'
-import { withAdminOnly, createApiResponse, withMethodValidation, withAuditLog, combineMiddleware } from '../../../../lib/api-auth'
-import { getAllUsers, updateUserRole, UserRole } from '../../../../lib/auth'
+import { NextRequest, NextResponse } from 'next/server'
+import { auth, clerkClient } from '@clerk/nextjs'
 
-/**
- * GET /api/admin/users - Get all users (admin only)
- */
-async function handleGetUsers(req: NextRequest) {
+export async function GET() {
   try {
-    const { searchParams } = new URL(req.url)
-    const limit = parseInt(searchParams.get('limit') || '20')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const { userId } = auth()
 
-    const users = await getAllUsers(limit, offset)
+    if (!userId) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
 
-    return createApiResponse(true, {
-      users,
-      pagination: {
-        limit,
-        offset,
+    // Get current user to check permissions
+    const currentUser = await clerkClient.users.getUser(userId)
+    const userRole = currentUser.publicMetadata?.role as string
+
+    if (userRole !== 'admin') {
+      return NextResponse.json({ success: false, error: 'Insufficient permissions' }, { status: 403 })
+    }
+
+    // Fetch all users
+    const response = await clerkClient.users.getUserList({
+      limit: 100,
+      orderBy: '-created_at'
+    })
+
+    // Transform users for the frontend
+    const users = response.map(user => ({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      emailAddresses: user.emailAddresses,
+      imageUrl: user.imageUrl,
+      lastActiveAt: user.lastActiveAt,
+      createdAt: user.createdAt,
+      role: user.publicMetadata?.role || 'viewer',
+      metadata: {
+        role: user.publicMetadata?.role || 'viewer',
+        department: user.publicMetadata?.department,
+        lastActive: user.lastActiveAt?.toISOString(),
+      },
+    }))
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        users,
         total: users.length,
       },
     })
+
   } catch (error) {
     console.error('Error fetching users:', error)
-    return createApiResponse(
-      false,
-      null,
-      'Failed to fetch users',
-      'An error occurred while retrieving user data',
-      500
+    return NextResponse.json(
+      { success: false, error: 'Internal server error' },
+      { status: 500 }
     )
   }
 }
 
-/**
- * PUT /api/admin/users - Update user role (admin only)
- */
-async function handleUpdateUserRole(req: NextRequest, context: any) {
+export async function PUT(request: Request) {
   try {
-    const body = await req.json()
-    const { userId, role } = body
+    const { userId: currentUserId } = auth()
+
+    if (!currentUserId) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Get current user to check permissions
+    const currentUser = await clerkClient.users.getUser(currentUserId)
+    const userRole = currentUser.publicMetadata?.role as string
+
+    if (userRole !== 'admin') {
+      return NextResponse.json({ success: false, error: 'Insufficient permissions' }, { status: 403 })
+    }
+
+    const { userId, role } = await request.json()
 
     if (!userId || !role) {
-      return createApiResponse(
-        false,
-        null,
-        'Missing required fields',
-        'userId and role are required',
-        400
-      )
+      return NextResponse.json({ success: false, error: 'Missing userId or role' }, { status: 400 })
     }
 
     // Validate role
-    const validRoles: UserRole[] = ['admin', 'analyst', 'viewer', 'data_manager']
+    const validRoles = ['admin', 'analyst', 'data_manager', 'viewer']
     if (!validRoles.includes(role)) {
-      return createApiResponse(
-        false,
-        null,
-        'Invalid role',
-        `Role must be one of: ${validRoles.join(', ')}`,
-        400
-      )
+      return NextResponse.json({
+        success: false,
+        error: `Invalid role. Must be one of: ${validRoles.join(', ')}`
+      }, { status: 400 })
     }
 
-    await updateUserRole(userId, role, context.userId)
+    // Prevent admins from changing their own role
+    if (userId === currentUserId) {
+      return NextResponse.json({ success: false, error: 'Cannot change your own role' }, { status: 400 })
+    }
 
-    return createApiResponse(
-      true,
-      { message: `User role updated to ${role} successfully` },
-      undefined,
-      `User role updated to ${role} successfully`
-    )
+    // Update user metadata
+    await clerkClient.users.updateUserMetadata(userId, {
+      publicMetadata: {
+        role,
+        lastUpdatedBy: currentUserId,
+        lastUpdatedAt: new Date().toISOString(),
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: 'User role updated successfully',
+    })
+
   } catch (error) {
     console.error('Error updating user role:', error)
-    return createApiResponse(
-      false,
-      null,
-      'Failed to update user role',
-      'An error occurred while updating the user role',
-      500
+    return NextResponse.json(
+      { success: false, error: 'Internal server error' },
+      { status: 500 }
     )
   }
 }
 
-/**
- * Main handler that routes based on HTTP method
- */
-async function handler(req: NextRequest, context: any) {
-  switch (req.method) {
-    case 'GET':
-      return handleGetUsers(req, context)
-    case 'PUT':
-      return handleUpdateUserRole(req, context)
-    default:
-      return createApiResponse(
-        false,
-        null,
-        'Method not allowed',
-        `Method ${req.method} is not allowed`,
-        405
-      )
-  }
-}
-
-// Apply middleware: admin auth, audit logging
-const protectedHandler = combineMiddleware(
-  withAdminOnly,
-  withAuditLog
-)
-
-export const GET = protectedHandler(handler)
-export const PUT = protectedHandler(handler)

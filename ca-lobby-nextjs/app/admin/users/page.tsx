@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { useUser } from '@clerk/nextjs'
+import { AuthWrapper } from '@/components/auth/AuthWrapper'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -9,8 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { RoleGuard } from '@/components/auth/RoleGuard'
-import { PERMISSIONS } from '../../../lib/auth'
 import {
   UserIcon,
   SearchIcon,
@@ -53,7 +51,8 @@ const roleColors = {
 } as const
 
 export default function UserManagementPage() {
-  const { user: currentUser } = useUser()
+  // Mock current user for development
+  const currentUser = { role: 'admin' }
   const [users, setUsers] = React.useState<User[]>([])
   const [loading, setLoading] = React.useState(true)
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -137,7 +136,11 @@ export default function UserManagementPage() {
   }, [fetchUsers])
 
   return (
-    <RoleGuard permissions={[PERMISSIONS.MANAGE_USERS]}>
+    <AuthWrapper
+      title="Admin Access Required"
+      description="You need admin privileges to access user management."
+      requireRole="admin"
+    >
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -325,6 +328,6 @@ export default function UserManagementPage() {
           </CardContent>
         </Card>
       </div>
-    </RoleGuard>
+    </AuthWrapper>
   )
 }

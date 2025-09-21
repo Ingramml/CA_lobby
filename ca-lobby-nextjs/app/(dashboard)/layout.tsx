@@ -27,7 +27,7 @@ export default function DashboardLayout({
     <AuthWrapper
       title="Dashboard Access Required"
       description="Please sign in to access the CA Lobby dashboard."
-      redirectUrl="/dashboard"
+      redirectUrl="/sign-in"
     >
       <ToastProvider>
         <div className="grid min-h-screen w-full grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[280px_1fr]">

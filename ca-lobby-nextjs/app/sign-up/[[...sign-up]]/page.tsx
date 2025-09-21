@@ -44,8 +44,7 @@ export default function SignUpPage() {
                   footerActionLink: 'text-blue-600 hover:text-blue-700',
                 },
               }}
-              redirectUrl="/dashboard"
-              afterSignUpUrl="/dashboard"
+              afterSignUpUrl="/"
             />
           </CardContent>
         </Card>

@@ -10,7 +10,7 @@ from .output_style_setup import OutputStyleSetupAgent
 from .website_coding_specialist import WebsiteCodingSpecialist
 from .session_archiver import SessionArchiverAgent
 from .vercel_deployment_expert import VercelDeploymentExpert
-from .ui_database_designer import UIDatabaseDesigner
+# from .ui_database_designer import UIDatabaseDesigner  # Module not found
 from .nextjs_fullstack_expert import NextJSFullstackExpert
 from .react_nextjs_migration_specialist import ReactNextJSMigrationSpecialist
 from .flask_nextjs_api_migration import FlaskNextJSAPIMigrationSpecialist
@@ -35,7 +35,7 @@ class AgentRegistry:
             WebsiteCodingSpecialist(),
             SessionArchiverAgent(),
             VercelDeploymentExpert(),
-            UIDatabaseDesigner(),
+            # UIDatabaseDesigner(),  # Module not found
             NextJSFullstackExpert(),
             ReactNextJSMigrationSpecialist(),
             FlaskNextJSAPIMigrationSpecialist(),

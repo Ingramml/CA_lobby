@@ -3,7 +3,6 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useUser } from "@clerk/nextjs"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 // import { filterNavigationByPermissions } from "../../../lib/auth"
@@ -113,13 +112,12 @@ const sidebarItems = [
 
 export function Sidebar({ className, collapsed = false, ...props }: SidebarProps) {
   const pathname = usePathname()
-  const { user } = useUser()
   const [expandedItems, setExpandedItems] = React.useState<string[]>([])
 
-  // Filter navigation items based on user permissions
+  // Show all navigation items in development mode
   const filteredSidebarItems = React.useMemo(() => {
-    return sidebarItems // TODO: Implement filterNavigationByPermissions
-  }, [user])
+    return sidebarItems
+  }, [])
 
   const toggleExpanded = (title: string) => {
     setExpandedItems(prev =>

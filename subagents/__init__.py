@@ -12,7 +12,7 @@ from .output_style_setup import OutputStyleSetupAgent
 from .website_coding_specialist import WebsiteCodingSpecialist
 from .session_archiver import SessionArchiverAgent
 from .vercel_deployment_expert import VercelDeploymentExpert
-from .ui_database_designer import UIDatabaseDesigner
+# from .ui_database_designer import UIDatabaseDesigner  # Module not found
 from .agent_registry import AgentRegistry
 
 __all__ = [
@@ -23,6 +23,6 @@ __all__ = [
     'WebsiteCodingSpecialist',
     'SessionArchiverAgent',
     'VercelDeploymentExpert',
-    'UIDatabaseDesigner',
+    # 'UIDatabaseDesigner',  # Module not found
     'AgentRegistry'
 ]

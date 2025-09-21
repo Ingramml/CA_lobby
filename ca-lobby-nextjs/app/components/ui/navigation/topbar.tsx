@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { UserButton } from "@clerk/nextjs"
+import { UserButton, useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -21,6 +21,7 @@ interface TopBarProps {
 
 export function TopBar({ onToggleSidebar }: TopBarProps) {
   const pathname = usePathname()
+  const { user } = useUser()
 
   // Generate breadcrumbs from pathname
   const generateBreadcrumbs = () => {
@@ -118,14 +119,16 @@ export function TopBar({ onToggleSidebar }: TopBarProps) {
               <SettingsIcon className="h-4 w-4" />
             </Button>
 
-            {/* User profile */}
+            {/* User Button from Clerk */}
             <UserButton
-              afterSignOutUrl="/"
               appearance={{
                 elements: {
                   avatarBox: "h-8 w-8",
+                  userButtonPopover: "border shadow-lg",
                 },
               }}
+              userProfileMode="modal"
+              afterSignOutUrl="/"
             />
           </div>
         </div>

@@ -1,11 +1,11 @@
 "use client"
 
 import React from 'react'
-import { useUser } from '@clerk/nextjs'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
-import { Button } from '../ui/button'
-import { SignInButton } from './SignInButton'
-import { ShieldIcon, LoaderIcon } from 'lucide-react'
+import { useAuth, useUser } from '@clerk/nextjs'
+import { Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import Link from 'next/link'
 
 interface AuthWrapperProps {
   children: React.ReactNode
@@ -14,70 +14,86 @@ interface AuthWrapperProps {
   title?: string
   description?: string
   redirectUrl?: string
+  requireRole?: 'admin' | 'analyst' | 'data_manager' | 'viewer'
 }
 
 /**
- * Wrapper component that ensures user is authenticated before rendering children
+ * Wrapper component that handles authentication with Clerk
  */
 export function AuthWrapper({
   children,
   fallback,
   loadingComponent,
-  title = 'Authentication Required',
-  description = 'Please sign in to access this content.',
-  redirectUrl,
+  title = "Authentication Required",
+  description = "Please sign in to access this content.",
+  redirectUrl = "/sign-in",
+  requireRole,
 }: AuthWrapperProps) {
-  const { isSignedIn, isLoaded } = useUser()
+  const { isLoaded, isSignedIn } = useAuth()
+  const { user } = useUser()
 
-  // Show loading state while checking authentication
+  // Show loading state while auth is loading
   if (!isLoaded) {
-    if (loadingComponent) {
-      return <>{loadingComponent}</>
-    }
-
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center space-y-4">
-          <LoaderIcon className="h-8 w-8 animate-spin mx-auto text-muted-foreground" />
+    return loadingComponent || (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-blue-600" />
           <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
     )
   }
 
-  // Show sign-in prompt if user is not authenticated
+  // If not signed in, show fallback or sign-in prompt
   if (!isSignedIn) {
-    if (fallback) {
-      return <>{fallback}</>
-    }
-
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
+    return fallback || (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-muted flex items-center justify-center">
-              <ShieldIcon className="h-6 w-6 text-muted-foreground" />
-            </div>
             <CardTitle>{title}</CardTitle>
             <CardDescription>{description}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex flex-col space-y-2">
-              <SignInButton redirectUrl={redirectUrl} />
-              <SignInButton mode="sign-up" variant="outline" redirectUrl={redirectUrl} />
-            </div>
-            <div className="text-center">
-              <Button variant="link" asChild>
-                <a href="/">Return to Home</a>
-              </Button>
-            </div>
+            <Button asChild className="w-full">
+              <Link href={redirectUrl}>Sign In</Link>
+            </Button>
+            <p className="text-center text-sm text-muted-foreground">
+              Don't have an account?{' '}
+              <Link href="/sign-up" className="text-blue-600 hover:underline">
+                Sign up here
+              </Link>
+            </p>
           </CardContent>
         </Card>
       </div>
     )
   }
 
-  // User is authenticated, render children
+  // Check role-based access if required
+  if (requireRole && user) {
+    const userRole = user.publicMetadata?.role as string
+    if (userRole !== requireRole && userRole !== 'admin') {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
+          <Card className="w-full max-w-md">
+            <CardHeader className="text-center">
+              <CardTitle>Access Denied</CardTitle>
+              <CardDescription>
+                You don't have permission to access this content. Required role: {requireRole}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full" variant="outline">
+                <Link href="/">Return to Dashboard</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )
+    }
+  }
+
+  // User is authenticated and has required role, render children
   return <>{children}</>
 }
 

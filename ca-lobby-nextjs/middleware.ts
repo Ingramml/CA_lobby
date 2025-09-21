@@ -2,6 +2,9 @@ import { authMiddleware } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+// Check if we should disable authentication (only in specific test environments)
+const shouldDisableAuth = process.env.DISABLE_CLERK_AUTH === 'true' && process.env.NODE_ENV === 'test'
+
 /**
  * Add comprehensive security headers to response
  */
@@ -119,13 +122,20 @@ function addSecurityHeaders(response: NextResponse, request: NextRequest): NextR
   return response
 }
 
-export default authMiddleware({
+// Simple middleware that bypasses auth when disabled
+function simpleMiddleware(request: NextRequest) {
+  const response = NextResponse.next()
+  return addSecurityHeaders(response, request)
+}
+
+// Export the appropriate middleware based on configuration
+export default shouldDisableAuth ? simpleMiddleware : authMiddleware({
   // Routes that can be accessed while signed out
   publicRoutes: [
     '/',
     '/api/health',
-    '/sign-in',
-    '/sign-up',
+    '/sign-in(.*)',
+    '/sign-up(.*)',
   ],
   // Routes that can always be accessed, and have
   // no authentication information
@@ -134,8 +144,8 @@ export default authMiddleware({
   ],
   // If the user is signed in and tries to access a sign in or sign up page,
   // redirect them to the after sign in URL
-  afterSignInUrl: '/dashboard',
-  afterSignUpUrl: '/dashboard',
+  afterSignInUrl: '/',
+  afterSignUpUrl: '/',
 
   // Add security headers to all responses
   beforeAuth: (req) => {

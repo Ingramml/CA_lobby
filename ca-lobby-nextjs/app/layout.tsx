@@ -8,6 +8,10 @@ import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
+// Check if we should disable authentication (only in specific test environments)
+const shouldDisableAuth = process.env.DISABLE_CLERK_AUTH === 'true' &&
+                         process.env.NODE_ENV === 'test'
+
 export const metadata: Metadata = {
   title: 'CA Lobby Dashboard',
   description: 'California Lobbying Data Analysis Platform',
@@ -25,6 +29,29 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const content = (
+    <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#2563eb" />
+      </head>
+      <body className={inter.className}>
+        <Suspense fallback={null}>
+          <PerformanceMonitor />
+        </Suspense>
+        {children}
+        <Suspense fallback={null}>
+          <AnalyticsProvider />
+        </Suspense>
+      </body>
+    </html>
+  )
+
+  // Return content with or without ClerkProvider based on configuration
+  if (shouldDisableAuth) {
+    return content
+  }
+
   return (
     <ClerkProvider
       appearance={{
@@ -33,22 +60,9 @@ export default function RootLayout({
           colorPrimary: '#2563eb',
         },
       }}
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
     >
-      <html lang="en">
-        <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="theme-color" content="#2563eb" />
-        </head>
-        <body className={inter.className}>
-          <Suspense fallback={null}>
-            <PerformanceMonitor />
-          </Suspense>
-          {children}
-          <Suspense fallback={null}>
-            <AnalyticsProvider />
-          </Suspense>
-        </body>
-      </html>
+      {content}
     </ClerkProvider>
   )
 }
