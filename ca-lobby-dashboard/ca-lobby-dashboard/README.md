@@ -36,7 +36,7 @@ cp .env.local.example .env.local
    - Go to [Clerk Dashboard](https://dashboard.clerk.com/)
    - Create a new application
    - Copy your API keys
-   - Update `.env.local` with your keys:
+   - Update `.env.local` with your keys (NEVER commit this file):
 
 ```env
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_your_key_here
@@ -108,6 +108,12 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 - **Styling:** Tailwind CSS
 - **Authentication:** Clerk
 - **Deployment:** Vercel
+
+## 🔒 Security
+
+- **Environment Variables:** Never commit `.env.local` files to version control
+- **API Keys:** Keep Clerk keys secure and rotate them regularly
+- **GitIgnore:** All `.env*` files are automatically ignored by git
 
 ## Next Steps
 
