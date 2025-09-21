@@ -1,23 +1,5 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import {
-  DatabaseIcon,
-  DownloadIcon,
-  UploadIcon,
-  BarChartIcon,
-  TrendingUpIcon,
-  UsersIcon,
-  FileTextIcon,
-  AlertCircleIcon,
-  CheckCircleIcon,
-  ActivityIcon
-} from 'lucide-react'
-import { LobbyingTrendsChart } from '@/components/charts/lobbying-trends-chart'
-import { PaymentAnalysisChart } from '@/components/charts/payment-analysis-chart'
-import { AssociationBreakdownChart } from '@/components/charts/association-breakdown-chart'
 
 export const metadata: Metadata = {
   title: 'Dashboard | CA Lobby',
@@ -89,11 +71,11 @@ const stats = [
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-6">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-600">
           Welcome to the California Lobbying Data Analysis Platform
         </p>
       </div>
@@ -101,180 +83,156 @@ export default function DashboardPage() {
       {/* Key Statistics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, index) => (
-          <Card key={index}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-                <Badge
-                  variant={stat.changeType === 'positive' ? 'default' : 'secondary'}
-                  className="text-xs"
-                >
-                  {stat.change}
-                </Badge>
-                <span>{stat.period}</span>
+          <div key={index} className="bg-white p-6 rounded-lg border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">{stat.title}</p>
+                <p className="text-2xl font-bold">{stat.value}</p>
+                <div className="flex items-center space-x-2 text-xs text-gray-500">
+                  <span className={`px-2 py-1 rounded text-xs ${
+                    stat.changeType === 'positive'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {stat.change}
+                  </span>
+                  <span>{stat.period}</span>
+                </div>
               </div>
-            </CardContent>
-          </Card>
+              <div className="text-2xl">📈</div>
+            </div>
+          </div>
         ))}
-      </div>
-
-      {/* Charts Row */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <LobbyingTrendsChart />
-        <AssociationBreakdownChart />
-      </div>
-
-      <div className="grid gap-6">
-        <PaymentAnalysisChart />
       </div>
 
       {/* Action Cards and Recent Activity */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Quick Actions */}
-        <Card className="lg:col-span-1">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ActivityIcon className="h-5 w-5" />
-              Quick Actions
-            </CardTitle>
-            <CardDescription>Common data operations</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Button className="w-full justify-start" variant="outline" asChild>
-              <Link href="/lobbying-data">
-                <DatabaseIcon className="mr-2 h-4 w-4" />
-                Browse Lobbying Data
-              </Link>
-            </Button>
-            <Button className="w-full justify-start" variant="outline" asChild>
-              <Link href="/reports/create">
-                <FileTextIcon className="mr-2 h-4 w-4" />
-                Create New Report
-              </Link>
-            </Button>
-            <Button className="w-full justify-start" variant="outline" asChild>
-              <Link href="/data/upload">
-                <UploadIcon className="mr-2 h-4 w-4" />
-                Upload Data
-              </Link>
-            </Button>
-            <Button className="w-full justify-start" variant="outline" asChild>
-              <Link href="/data/analyze">
-                <BarChartIcon className="mr-2 h-4 w-4" />
-                Analyze Data
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              ⚡ Quick Actions
+            </h3>
+            <p className="text-sm text-gray-600">Common data operations</p>
+          </div>
+          <div className="space-y-3">
+            <Link
+              href="/lobbying-data"
+              className="flex items-center gap-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              🗃️ Browse Lobbying Data
+            </Link>
+            <Link
+              href="/reports/create"
+              className="flex items-center gap-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              📄 Create New Report
+            </Link>
+            <Link
+              href="/data/upload"
+              className="flex items-center gap-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              📤 Upload Data
+            </Link>
+            <Link
+              href="/data/analyze"
+              className="flex items-center gap-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              📊 Analyze Data
+            </Link>
+          </div>
+        </div>
 
         {/* Recent Activity */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ActivityIcon className="h-5 w-5" />
-              Recent Activity
-            </CardTitle>
-            <CardDescription>Latest system activities and updates</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentActivities.map((activity) => (
-                <div key={activity.id} className="flex items-start space-x-3 border-b pb-3 last:border-b-0">
-                  <div className="mt-1">
-                    {activity.status === 'success' && (
-                      <CheckCircleIcon className="h-4 w-4 text-green-600" />
-                    )}
-                    {activity.status === 'warning' && (
-                      <AlertCircleIcon className="h-4 w-4 text-yellow-600" />
-                    )}
-                    {activity.status === 'info' && (
-                      <ActivityIcon className="h-4 w-4 text-blue-600" />
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground">
-                      {activity.action}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {activity.description}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {activity.timestamp}
-                    </p>
-                  </div>
+        <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-gray-200">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              📱 Recent Activity
+            </h3>
+            <p className="text-sm text-gray-600">Latest system activities and updates</p>
+          </div>
+          <div className="space-y-4">
+            {recentActivities.map((activity) => (
+              <div key={activity.id} className="flex items-start space-x-3 border-b border-gray-100 pb-3 last:border-b-0">
+                <div className="mt-1">
+                  {activity.status === 'success' && <span className="text-green-600">✅</span>}
+                  {activity.status === 'warning' && <span className="text-yellow-600">⚠️</span>}
+                  {activity.status === 'info' && <span className="text-blue-600">ℹ️</span>}
                 </div>
-              ))}
-            </div>
-            <div className="mt-4 pt-4 border-t">
-              <Button variant="outline" className="w-full" asChild>
-                <Link href="/activity">
-                  View All Activity
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900">
+                    {activity.action}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {activity.description}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {activity.timestamp}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <Link
+              href="/activity"
+              className="block w-full p-3 text-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              View All Activity
+            </Link>
+          </div>
+        </div>
       </div>
 
       {/* System Status */}
       <div className="grid gap-6 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Database Status</CardTitle>
-            <DatabaseIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center space-x-2">
-              <CheckCircleIcon className="h-5 w-5 text-green-600" />
-              <div>
-                <div className="text-sm font-bold text-green-600">Connected</div>
-                <p className="text-xs text-muted-foreground">
-                  BigQuery operational
-                </p>
-              </div>
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between mb-2">
+            <h4 className="text-sm font-medium text-gray-600">Database Status</h4>
+            <span className="text-xl">🗄️</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-green-600">✅</span>
+            <div>
+              <div className="text-sm font-bold text-green-600">Connected</div>
+              <p className="text-xs text-gray-500">
+                BigQuery operational
+              </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Data Freshness</CardTitle>
-            <ActivityIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center space-x-2">
-              <CheckCircleIcon className="h-5 w-5 text-green-600" />
-              <div>
-                <div className="text-sm font-bold">Up to Date</div>
-                <p className="text-xs text-muted-foreground">
-                  Last updated 2 mins ago
-                </p>
-              </div>
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between mb-2">
+            <h4 className="text-sm font-medium text-gray-600">Data Freshness</h4>
+            <span className="text-xl">🔄</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-green-600">✅</span>
+            <div>
+              <div className="text-sm font-bold">Up to Date</div>
+              <p className="text-xs text-gray-500">
+                Last updated 2 mins ago
+              </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">System Health</CardTitle>
-            <BarChartIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center space-x-2">
-              <CheckCircleIcon className="h-5 w-5 text-green-600" />
-              <div>
-                <div className="text-sm font-bold text-green-600">Healthy</div>
-                <p className="text-xs text-muted-foreground">
-                  All systems operational
-                </p>
-              </div>
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between mb-2">
+            <h4 className="text-sm font-medium text-gray-600">System Health</h4>
+            <span className="text-xl">💚</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-green-600">✅</span>
+            <div>
+              <div className="text-sm font-bold text-green-600">Healthy</div>
+              <p className="text-xs text-gray-500">
+                All systems operational
+              </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   )
