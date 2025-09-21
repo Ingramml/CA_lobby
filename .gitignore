@@ -11,3 +11,4 @@ Deprecated*
 *.env
 # Ignore Python cache files
 __pycache__/
+.master-files/*
