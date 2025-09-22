@@ -22,7 +22,8 @@ def health_check():
         'status': 'healthy',
         'message': 'CA Lobby API is running',
         'timestamp': datetime.now().isoformat(),
-        'version': '1.0.0'
+        'version': '1.0.0',
+        'source': 'GitHub retest branch'
     })
 
 @app.route('/api/status')
