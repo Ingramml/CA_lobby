@@ -1,0 +1,152 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.sign-in-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.sign-in-btn:hover {
+  background-color: #0056b3;
+}
+
+.App-main {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.welcome-section {
+  background: white;
+  padding: 60px 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 40px 0;
+}
+
+.welcome-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.welcome-section p {
+  color: #666;
+  font-size: 18px;
+}
+
+.dashboard-section h2 {
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.dashboard-card h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.api-result {
+  text-align: left;
+}
+
+.api-result .success {
+  color: #28a745;
+  background-color: #d4edda;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #c3e6cb;
+}
+
+.api-result .error {
+  color: #dc3545;
+  background-color: #f8d7da;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #f5c6cb;
+}
+
+.api-result p {
+  margin: 5px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+}
+
+.api-result ul {
+  margin: 10px 0 0 20px;
+}
+
+.api-result li {
+  margin: 5px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .App-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .dashboard-card {
+    padding: 20px;
+  }
+}
