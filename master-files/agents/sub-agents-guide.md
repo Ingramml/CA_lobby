@@ -48,6 +48,7 @@ Sub agents are launched using the Task tool and operate autonomously to complete
 - **documentation-specialist**: Technical documentation, API docs, README creation, and knowledge management
 - **deployment-orchestrator**: Multi-platform deployment coordination and CI/CD pipeline management
 - **lessons-learned-analyst**: Post-project analysis, knowledge extraction, and best practices documentation
+- **deployment-safe-project-planner**: Expert planning subagent that creates deployment-safe development plans with multiple save points, comprehensive error detection, and intelligent subagent coordination
 
 ### Specialized Integration Experts
 - **environment-config**: Environment variable management, secrets handling, and configuration validation
@@ -174,6 +175,9 @@ Each archive file should include:
 - Technical documentation creation and maintenance
 - Lessons learned analysis and knowledge extraction
 - Best practices documentation and implementation
+- Deployment-safe project planning with multiple save points and error detection
+- Comprehensive development plans with subagent orchestration and risk mitigation
+- Multi-phase planning with mandatory deployment validation at each checkpoint
 
 ### Deployment & Integration
 - Multi-platform deployment coordination
