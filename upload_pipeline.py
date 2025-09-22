@@ -1,7 +1,7 @@
 from upload import upload_to_bigquery
 from rowtypeforce import row_type_force
 from Bigquery_connection import bigquery_connect
-from load_dotenv import load_dotenv
+from dotenv import load_dotenv
 import os
 import pandas as pd
 from datetime import datetime
@@ -16,7 +16,7 @@ if downloaded_files:
     all_files = downloaded_files
 else:
     all_files = glob.glob(f"{download_dir}/{today}/*.csv")
-load_dotenv()
+load_dotenv('.env')  # Explicitly use root .env file
 #all_files=glob.glob('/Users/michaelingram/Documents/GitHub/CA_lobby/Downloaded_files/*/*.csv')
 files_to_process = [f for f in all_files  if not (os.path.basename(f).startswith("clean") or os.path.basename(f).startswith("project"))]
 print(files_to_process)
