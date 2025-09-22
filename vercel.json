@@ -19,5 +19,21 @@
       "src": "/(.*)",
       "dest": "webapp/frontend/build/$1"
     }
+  ],
+  "functions": {
+    "webapp/backend/app.py": {
+      "includeFiles": "**"
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Client-IP",
+          "value": "$remote_addr"
+        }
+      ]
+    }
   ]
 }

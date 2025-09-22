@@ -8,9 +8,127 @@ import {
   useUser
 } from '@clerk/clerk-react';
 
+// IP Whitelist Configuration
+const WHITELISTED_IPS = [
+  '185.203.218.172', // Your current IP
+  '127.0.0.1',       // Localhost
+  '::1'              // IPv6 localhost
+];
+
+// IP Whitelist Hook
+function useIPWhitelist() {
+  const [isWhitelisted, setIsWhitelisted] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [clientIP, setClientIP] = React.useState(null);
+
+  React.useEffect(() => {
+    const checkIPWhitelist = async () => {
+      try {
+        // Try to get client IP
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        const detectedIP = data.ip;
+
+        setClientIP(detectedIP);
+        const whitelisted = WHITELISTED_IPS.includes(detectedIP);
+        setIsWhitelisted(whitelisted);
+
+        console.log('IP Whitelist Check:', {
+          detectedIP,
+          whitelisted,
+          whitelistedIPs: WHITELISTED_IPS
+        });
+
+      } catch (error) {
+        console.error('Error checking IP whitelist:', error);
+        setIsWhitelisted(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkIPWhitelist();
+  }, []);
+
+  return { isWhitelisted, loading, clientIP };
+}
+
 function App() {
   const { user } = useUser();
+  const { isWhitelisted, loading, clientIP } = useIPWhitelist();
 
+  // Show loading state while checking IP whitelist
+  if (loading) {
+    return (
+      <div className="App">
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh'
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <h2>Checking Access Permissions...</h2>
+            <p>Verifying IP whitelist status</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // If IP is whitelisted, bypass authentication entirely
+  if (isWhitelisted) {
+    return (
+      <div className="App">
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          background: '#28a745',
+          color: 'white',
+          padding: '5px 10px',
+          fontSize: '12px',
+          zIndex: 1000
+        }}>
+          Whitelisted IP: {clientIP}
+        </div>
+
+        <header className="App-header">
+          <div className="header-content">
+            <h1>Welcome to TPC's CA lobby search</h1>
+            <div style={{ color: '#28a745', fontSize: '14px' }}>
+              Authenticated via IP Whitelist
+            </div>
+          </div>
+        </header>
+
+        <main className="App-main">
+          <div className="dashboard-section">
+            <h2>Welcome, Whitelisted User!</h2>
+
+            <div className="dashboard-grid">
+              <div className="dashboard-card">
+                <h3>API Health Check</h3>
+                <APIHealthCheck />
+              </div>
+
+              <div className="dashboard-card">
+                <h3>System Status</h3>
+                <SystemStatus />
+              </div>
+
+              <div className="dashboard-card">
+                <h3>Data Access</h3>
+                <DataAccessTest />
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // If not whitelisted, use normal Clerk authentication
   return (
     <div className="App">
       <header className="App-header">
@@ -32,6 +150,9 @@ function App() {
           <div className="welcome-section">
             <h2>Welcome to TPC's CA lobby search</h2>
             <p>Please sign in to access the search dashboard.</p>
+            <p style={{ fontSize: '12px', color: '#666' }}>
+              Your IP: {clientIP} (not whitelisted)
+            </p>
           </div>
         </SignedOut>
 

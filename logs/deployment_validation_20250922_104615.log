@@ -1,0 +1,41 @@
+[2025-09-22 10:46:15] [INFO] Starting CA Lobby deployment validation
+[2025-09-22 10:46:15] [INFO] Log file: /Users/michaelingram/Documents/GitHub/CA_lobby/logs/deployment_validation_20250922_104615.log
+[2025-09-22 10:46:15] [INFO] === Checking System Requirements ===
+[2025-09-22 10:46:15] [SUCCESS] Node.js available: v22.19.0
+[2025-09-22 10:46:15] [SUCCESS] Python available: Python 3.11.12
+[2025-09-22 10:46:16] [SUCCESS] Vercel CLI available: 48.1.0
+[2025-09-22 10:46:16] [SUCCESS] Git available: git version 2.48.1
+[2025-09-22 10:46:16] [INFO] === Validating Build Process ===
+[2025-09-22 10:46:16] [INFO] Testing frontend build process
+[2025-09-22 10:46:18] [SUCCESS] Frontend build completed successfully
+[2025-09-22 10:46:18] [SUCCESS] Build artifacts created successfully
+[2025-09-22 10:46:18] [INFO] === Validating Production Deployment: https://rtest1-beta.vercel.app ===
+[2025-09-22 10:46:18] [INFO] Validating frontend deployment
+[2025-09-22 10:46:18] [INFO] Checking Frontend homepage: https://rtest1-beta.vercel.app/
+[2025-09-22 10:46:18] [SUCCESS] Frontend homepage is accessible
+[2025-09-22 10:46:19] [WARNING] React application indicators not found in frontend
+[2025-09-22 10:46:19] [SUCCESS] CA Lobby branding found in frontend
+[2025-09-22 10:46:19] [SUCCESS] Frontend validation passed
+[2025-09-22 10:46:19] [INFO] Testing API endpoints (may be protected by authentication)
+[2025-09-22 10:46:19] [INFO] Testing Production Flask health endpoint: https://rtest1-beta.vercel.app/api/health
+[2025-09-22 10:46:19] [SUCCESS] Production Flask health endpoint returned valid JSON
+{
+    "message": "CA Lobby API is running",
+    "source": "GitHub retest branch",
+    "status": "healthy",
+    "timestamp": "2025-09-22T14:46:19.503893",
+    "version": "1.0.0"
+}
+[2025-09-22 10:46:19] [SUCCESS] Health endpoint reports healthy status
+[2025-09-22 10:46:19] [INFO] Testing Production Flask status endpoint: https://rtest1-beta.vercel.app/api/status
+[2025-09-22 10:46:19] [SUCCESS] Production Flask status endpoint returned valid JSON
+{
+    "debug": "True",
+    "environment": "development",
+    "mock_data": "true",
+    "timestamp": "2025-09-22T14:46:19.917550",
+    "version": "1.0.0"
+}
+[2025-09-22 10:46:20] [INFO] === Validation Summary ===
+[2025-09-22 10:46:20] [SUCCESS] All validations passed! 🎉
+[2025-09-22 10:46:20] [INFO] Deployment is ready for production use
