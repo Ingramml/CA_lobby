@@ -15,7 +15,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <div className="header-content">
-          <h1>CA Lobby Dashboard</h1>
+          <h1>Welcome to TPC's CA lobby search</h1>
           <SignedOut>
             <SignInButton mode="modal">
               <button className="sign-in-btn">Sign In</button>
@@ -30,8 +30,8 @@ function App() {
       <main className="App-main">
         <SignedOut>
           <div className="welcome-section">
-            <h2>Welcome to CA Lobby</h2>
-            <p>Please sign in to access the dashboard.</p>
+            <h2>Welcome to TPC's CA lobby search</h2>
+            <p>Please sign in to access the search dashboard.</p>
           </div>
         </SignedOut>
 
